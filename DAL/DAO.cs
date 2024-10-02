@@ -9,14 +9,16 @@ namespace DAL
 {
 	public class DAO
 	{
-		private MongoClient client;
+		protected MongoClient client;
 		private string connectionString = "mongodb+srv://716588:Marijke%4002@cluster0.rnouj.mongodb.net/";
 		private string dbName = "projectTuin";
+		private IMongoDatabase db;
+		protected IMongoDatabase Db { get { return db; } }
 
 		public DAO()
 		{
 			client = new MongoClient(connectionString);
-			var db = client.GetDatabase(dbName);
+			db = client.GetDatabase(dbName);
 		}
 
 		public List<Databases_Model> GetDatabases()
