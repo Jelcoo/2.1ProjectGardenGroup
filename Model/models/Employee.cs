@@ -2,8 +2,8 @@
 {
 	public class Employee : PartialUser
 	{
-		public Role Role;
-		public string PasswordHash;
-		public string PasswordSalt;
+		public Role role;
+		public string password_hashed;
+		public string password_salt;
 	}
 }
