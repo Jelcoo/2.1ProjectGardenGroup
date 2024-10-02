@@ -1,4 +1,6 @@
-﻿using System.Windows;
+using DAL;
+using Logic;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace UI.UserControls
@@ -15,7 +17,8 @@ namespace UI.UserControls
 
 		private void IncidentButton_Click(object sender, RoutedEventArgs e)
 		{
-
+			TicketBll ticketBll = new TicketBll();
+			TicketDao ticketDao = new TicketDao();
 		}
 
 		private void UserControl_Loaded(object sender, RoutedEventArgs e)
