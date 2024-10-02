@@ -5,11 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UI"
         mc:Ignorable="d"
-        Title="MainWindow" Loaded="Window_Loaded" Height="615.96" Width="1000" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" MinWidth="600">
+        Title="MainWindow" Loaded="Window_Loaded" Height="600" MinHeight="400" Width="1000" MinWidth="600" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center">
 	<Grid x:Name="gMainWindow">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="10*"/>
+			<ColumnDefinition Width="80*"/>
+			<ColumnDefinition Width="10*"/>
+		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="100"/>
 			<RowDefinition/>
 		</Grid.RowDefinitions>
+		<ScrollViewer x:Name="svMainContent" Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Auto"/>
 	</Grid>
 </Window>
