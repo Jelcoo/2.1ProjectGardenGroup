@@ -18,15 +18,8 @@ namespace UI
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
-			//var dbList = databases.Get_All_Databases();
-
-			//foreach (var db in dbList)
-			//{
-			//	//listBox1.Items.Add(db.name);
-			//}
-
-			TicketOverview ticketOverview = new TicketOverview();
-			svMainContent.Content = ticketOverview;
+			LoginScreen loginScreen = new LoginScreen();
+			svMainContent.Content = loginScreen;
 		}
 	}
 }

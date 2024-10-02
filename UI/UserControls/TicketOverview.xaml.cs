@@ -1,4 +1,4 @@
-﻿using DAL;
+using DAL;
 using Logic;
 using System.Windows;
 using System.Windows.Controls;
