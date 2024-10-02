@@ -1,11 +1,5 @@
-﻿using System;
-using System.Linq;
-using System.Windows;
-using MongoDB.Driver;
-using MongoDB.Bson;
+﻿using System.Windows;
 using Logic;
-using Model;
-using System.Windows.Controls;
 using UI.UserControls;
 
 namespace UI
@@ -31,11 +25,8 @@ namespace UI
 			//	//listBox1.Items.Add(db.name);
 			//}
 
-			UserControl1 userControl1 = new UserControl1();
-			//svMainWindow.Content = userControl1;
-			gMainWindow.Children.Add(userControl1);
-			Grid.SetColumn(userControl1, 0);
-			Grid.SetRow(userControl1, 1);
+			TicketOverview ticketOverview = new TicketOverview();
+			svMainContent.Content = ticketOverview;
 		}
 	}
 }
