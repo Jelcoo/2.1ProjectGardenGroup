@@ -8,7 +8,7 @@ namespace DAL
 {
 	public class DAO
 	{
-		private MongoClient client;
+		protected MongoClient client;
 		private string connectionString = "mongodb+srv://716588:Marijke%4002@cluster0.rnouj.mongodb.net/";
 		private string dbName = "TuinDB";
         private IMongoDatabase db;
