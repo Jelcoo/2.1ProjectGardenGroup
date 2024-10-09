@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net7.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
@@ -14,6 +14,7 @@
 
   <ItemGroup>
 	<PackageReference Include="DnsClient" version="1.4.0" />
+	<PackageReference Include="LiveCharts.Core" Version="0.9.8" />
 	<PackageReference Include="MongoDB.Bson" version="2.13.1" />
 	<PackageReference Include="MongoDB.Driver" version="2.13.1" />
 	<PackageReference Include="MongoDB.Driver.Core" version="2.13.1" />
