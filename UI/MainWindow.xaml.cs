@@ -21,8 +21,12 @@ namespace UI
 			//LoginScreen loginScreen = new LoginScreen();
 			//svMainContent.Content = loginScreen;
 
-            CreateEmployee createEmployee = new CreateEmployee();
-            svMainContent.Content = createEmployee;
+           // CreateEmployee createEmployee = new CreateEmployee();
+            //svMainContent.Content = createEmployee;
+
+			UserManagement userManagement = new UserManagement();
+			svMainContent.Content = userManagement;
+
         }
 	}
 }

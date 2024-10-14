@@ -64,33 +64,52 @@ namespace DAL
         }
 
         //methode om alle users op te halen en een lijst van users terug te geven
-        public List<Employee> GetAllUsers()
+        public List<Employee> GetAllEmployees()
         {
-            List<Employee> users = Db.GetCollection<Employee>("employees")
+            List<Employee> employees = Db.GetCollection<Employee>("employees")
                 .Aggregate()
+                .Match(Builders<Employee>.Filter.Empty) 
                 .ToList();
 
-            return users;
+            return employees;
         }
 
         //methode om user informatie te updaten
-        public void UpdateUser(string id, string name, string email, string phoneNumber)
+        public void UpdateEmployee(string id, string name, string email, string phoneNumber, Role role)
         {
             //update definition maken en de query uitvoeren
-            UpdateDefinition<Employee> updateDefinition = Builders<Employee>.Update
+            //UpdateDefinition<Employee> updateDefinition = Builders<Employee>.Update
+            var updateDefinition = Builders<Employee>.Update
+
                 .Set(u => u.name, name)
                 .Set(u => u.email, email)
-                .Set(u => u.phone_number, phoneNumber);
+                .Set(u => u.phone_number, phoneNumber)
+                .Set(e => e.role, role);
 
             Db.GetCollection<Employee>("employees")
                 .UpdateOne(u => u.Id == id, updateDefinition);
         }
 
         //methode om user te deleten met ID (delete)
-        public void DeleteUser(string id)
+        public void DeleteEmployee(string id)
         {
             Db.GetCollection<Employee>("employees")
-                .DeleteOne(u => u.Id == id);
+                .DeleteOne(Builders<Employee>.Filter.Eq(e => e.Id, id));
         }
+
+        //public List<Employee> GetEmployeesWithTickets()
+        //{
+          //  var pipeline = Db.GetCollection<Employee>("employees")
+            //    .Aggregate()
+              //  .Lookup<Employee, Ticket, Employee>(
+                //    "tickets",          // The collection you're joining with
+                  //  "Id",               // Local field in employees
+                    //"EmployeeId",       // Field in tickets collection
+                    //@as: "Tickets"      // The name of the new array field in the result
+               // )
+                //.ToList();
+
+            //return pipeline;
+       // }
     }
 }

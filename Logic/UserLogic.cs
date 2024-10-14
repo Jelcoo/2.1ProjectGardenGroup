@@ -21,16 +21,16 @@ namespace Logic
         //methode o,m alle users te retrieve (read)
         public List<Employee> GetAllUsers()
         {
-            return userDao.GetAllUsers();
+            return userDao.GetAllEmployees();
         }
-        public void UpdateUser(string id, string name, string email, string phoneNumber)
+        public void UpdateUser(string id, string name, string email, string phoneNumber, Role role)
         {
-            userDao.UpdateUser(id, name, email, phoneNumber);
+            userDao.UpdateEmployee(id, name, email, phoneNumber, role);
         }
         // verwijder user door ID
         public void DeleteUser(string id)
         {
-            userDao.DeleteUser(id);
+            userDao.DeleteEmployee(id);
         }
     }
 }

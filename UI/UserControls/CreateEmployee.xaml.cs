@@ -15,7 +15,7 @@ namespace UI.UserControls
     /// </summary>
     public partial class CreateEmployee : UserControl
     {
-
+        private readonly MainWindow parentWindow;
         private readonly UserLogic userLogic; 
 
         public CreateEmployee()
@@ -49,6 +49,9 @@ namespace UI.UserControls
             userLogic.CreateUser(name, email, phoneNumber, password, selectedRole);
 
             MessageBox.Show("User created successfully!");
+
+            parentWindow.Content = new UserManagement(); 
+
         }
 
         private void CboxTypeOfUser_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -56,6 +59,16 @@ namespace UI.UserControls
             if (CboxTypeOfUser.SelectedItem != null)
             {
                 Role selectedRole = (Role)CboxTypeOfUser.SelectedItem;
+            }
+        }
+
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            var parentWindow = Window.GetWindow(this);
+
+            if (parentWindow != null)
+            {
+                parentWindow.Content = new UserManagement();
             }
         }
     }
