@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using LiveChartsCore.SkiaSharpView.Extensions;
@@ -49,7 +50,7 @@ namespace Logic
             GaugeTotalOpenTickets = closedTicketsCounts[0].count;
             int openTicketsCount = 0;
             if (openTicketsCounts.Count > 0)
-            {
+    {
                 openTicketsCount = openTicketsCounts.Count;
             }
 
@@ -69,7 +70,7 @@ namespace Logic
             GaugeTotalPastDeadlineTickets = closedTicketsCounts[0].count;
             int count = 0;
             if (ticketsPastDeadline.Count > 0)
-            {
+        {
                 count = ticketsPastDeadline.Count;
             }
 
