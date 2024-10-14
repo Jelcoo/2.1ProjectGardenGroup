@@ -1,48 +1,59 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <UseWPF>true</UseWPF>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net6.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UseWPF>true</UseWPF>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Content Remove="C:\Users\modem\.nuget\packages\mongodb.libmongocrypt\1.2.2\contentFiles\any\netstandard2.1\mongocrypt.dll" />
-  </ItemGroup>
 
-  <ItemGroup>
-	<PackageReference Include="DnsClient" version="1.4.0" />
-	<PackageReference Include="MongoDB.Bson" version="2.13.1" />
-	<PackageReference Include="MongoDB.Driver" version="2.13.1" />
-	<PackageReference Include="MongoDB.Driver.Core" version="2.13.1" />
-	<PackageReference Include="MongoDB.Libmongocrypt" version="1.2.2" />
-	<PackageReference Include="SharpCompress" version="0.23.0" />
-	<PackageReference Include="System.Buffers" version="4.5.1" />
-	<PackageReference Include="System.IO" version="4.3.0" />
-	<PackageReference Include="System.Net.Http" version="4.3.4" />
-	<PackageReference Include="System.Runtime" version="4.3.0" />
-	<PackageReference Include="System.Runtime.CompilerServices.Unsafe" version="5.0.0" />
-	<PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" version="4.3.0" />
-	<PackageReference Include="System.Security.Cryptography.Algorithms" version="4.3.0" />
-	<PackageReference Include="System.Security.Cryptography.Encoding" version="4.3.0" />
-	<PackageReference Include="System.Security.Cryptography.Primitives" version="4.3.0" />
-	<PackageReference Include="System.Security.Cryptography.X509Certificates" version="4.3.0" />
-	<PackageReference Include="System.ValueTuple" version="4.5.0" />
-  </ItemGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<WarningsAsErrors />
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Logic\Logic.csproj" />
-    <ProjectReference Include="..\Model\Model.csproj" />
-  </ItemGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<WarningsAsErrors />
+	</PropertyGroup>
+	<ItemGroup>
+		<Content Remove="C:\Users\modem\.nuget\packages\mongodb.libmongocrypt\1.2.2\contentFiles\any\netstandard2.1\mongocrypt.dll" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Content Remove="C:\Users\modem\.nuget\packages\mongodb.libmongocrypt\1.2.2\build\../runtimes/win/native/mongocrypt.dll" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="DnsClient" version="1.4.0" />
+		<PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-rc3.3" />
+		<PackageReference Include="MongoDB.Bson" version="2.13.1" />
+		<PackageReference Include="MongoDB.Driver" version="2.13.1" />
+		<PackageReference Include="MongoDB.Driver.Core" version="2.13.1" />
+		<PackageReference Include="MongoDB.Libmongocrypt" version="1.2.2" />
+		<PackageReference Include="SharpCompress" version="0.23.0" />
+		<PackageReference Include="System.Buffers" version="4.5.1" />
+		<PackageReference Include="System.IO" version="4.3.0" />
+		<PackageReference Include="System.Net.Http" version="4.3.4" />
+		<PackageReference Include="System.Runtime" version="4.3.0" />
+		<PackageReference Include="System.Runtime.CompilerServices.Unsafe" version="5.0.0" />
+		<PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" version="4.3.0" />
+		<PackageReference Include="System.Security.Cryptography.Algorithms" version="4.3.0" />
+		<PackageReference Include="System.Security.Cryptography.Encoding" version="4.3.0" />
+		<PackageReference Include="System.Security.Cryptography.Primitives" version="4.3.0" />
+		<PackageReference Include="System.Security.Cryptography.X509Certificates" version="4.3.0" />
+		<PackageReference Include="System.ValueTuple" version="4.5.0" />
+		<PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0">
+			<NoWarn>NU1605</NoWarn>
+		</PackageReference>
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Logic\Logic.csproj" />
+		<ProjectReference Include="..\Model\Model.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Content Remove="C:\Users\modem\.nuget\packages\mongodb.libmongocrypt\1.2.2\build\../runtimes/win/native/mongocrypt.dll" />
-  </ItemGroup>
+	<ItemGroup>
+		<Content Remove="C:\Users\modem\.nuget\packages\mongodb.libmongocrypt\1.2.2\build\../runtimes/win/native/mongocrypt.dll" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Remove="C:\Users\modem\.nuget\packages\mongodb.libmongocrypt\1.2.2\build\../runtimes/win/native/mongocrypt.dll" />
+	</ItemGroup>
 
 </Project>
