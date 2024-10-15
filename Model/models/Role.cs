@@ -1,4 +1,6 @@
-﻿namespace Model.models
+﻿
+
+namespace Model.models
 {
 	public enum Role
 	{
