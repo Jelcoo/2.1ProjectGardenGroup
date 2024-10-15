@@ -31,7 +31,7 @@ namespace DAL
             {
                 List<TicketsCount> tickets = Db.GetCollection<Ticket>("tickets")
                     .Aggregate()
-                    .Match(e => e.status == status)
+                    .Match(e => e.Status == status)
                     .Group(
                         g => $"{status} tickets",
                         g => new TicketsCount
@@ -53,7 +53,7 @@ namespace DAL
         {
             List<TicketsCount> tickets = Db.GetCollection<Ticket>("tickets")
                 .Aggregate()
-                .Match(e => e.status == "open"
+                .Match(e => e.Status == "open"
                 && e.CreatedAt < DateTime.UtcNow)
                 .Group(g => "Tickets Past Deadline",
                 g => new TicketsCount

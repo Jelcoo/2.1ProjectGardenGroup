@@ -7,7 +7,7 @@ namespace Model
         public int _id;
         public string Title;
         public string Description;
-        public string status;
+        public string Status;
         public string Priority;
         public Comment[] Comments;
         public PartialUser ReportedBy;
