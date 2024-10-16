@@ -116,7 +116,7 @@
     <Compile Include="models\Comment.cs" />
     <Compile Include="Databases_Model.cs" />
     <Compile Include="models\Employee.cs" />
-    <Compile Include="models\OpenTicketsCount.cs" />
+    <Compile Include="models\TicketsCount.cs" />
     <Compile Include="models\PartialUser.cs" />
     <Compile Include="models\Role.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
