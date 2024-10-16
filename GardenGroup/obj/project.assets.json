@@ -1880,6 +1880,7 @@
   },
   "projectFileDependencyGroups": {
     "net6.0-windows7.0": [
+      "LiveChartsCore.SkiaSharpView.WPF >= 2.0.0-rc3.3",
       "Logic >= 1.0.0",
       "Model >= 1.0.0"
     ]
@@ -1934,6 +1935,12 @@
     "frameworks": {
       "net6.0-windows7.0": {
         "targetAlias": "net6.0-windows",
+        "dependencies": {
+          "LiveChartsCore.SkiaSharpView.WPF": {
+            "target": "Package",
+            "version": "[2.0.0-rc3.3, )"
+          }
+        },
         "imports": [
           "net461",
           "net462",

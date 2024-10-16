@@ -149,7 +149,7 @@ namespace UI.UserControls {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/UI;component/usercontrols/createemployee.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/UI;V1.0.0.0;component/usercontrols/createemployee.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\UserControls\CreateEmployee.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

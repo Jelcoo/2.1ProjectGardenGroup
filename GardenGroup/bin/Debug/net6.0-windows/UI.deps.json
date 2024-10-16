@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v6.0": {
       "UI/1.0.0": {
         "dependencies": {
+          "LiveChartsCore.SkiaSharpView.WPF": "2.0.0-rc3.3",
           "Logic": "1.0.0",
           "Model": "1.0.0"
         },
