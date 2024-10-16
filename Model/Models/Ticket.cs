@@ -8,7 +8,7 @@ namespace Model.Models
 {
     public class Ticket
     {
-        public int _id;
+        public string _id;
         public string Title;
         public string Description;
         public string Status;

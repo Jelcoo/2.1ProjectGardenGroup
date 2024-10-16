@@ -15,8 +15,12 @@ namespace UI
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            LoginScreen loginScreen = new LoginScreen();
-            svMainContent.Content = loginScreen;
+            //LoginScreen screen = new LoginScreen();
+            //Dashboard screen = new Dashboard();
+            //UserManagement screen = new UserManagement();
+            //TicketOverview screen = new TicketOverview();
+            CreateTicket screen = new CreateTicket();
+            svMainContent.Content = screen;
         }
     }
 }

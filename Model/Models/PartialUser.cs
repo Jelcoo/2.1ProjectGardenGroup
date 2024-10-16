@@ -12,5 +12,10 @@ namespace Model.Models
         public string name { get; set; }
         public string email { get; set; }
         public string phone_number { get; set; }
+
+        public override string ToString()
+        {
+            return name;
+        }
     }
 }
