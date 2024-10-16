@@ -8,8 +8,8 @@ namespace Model.Models
 {
     public class Comment
     {
-        public string Message;
-        public PartialUser CommentedBy;
-        public DateTime CommentedAt;
+        public string message;
+        public PartialUser commented_by;
+        public DateTime commented_at;
     }
 }

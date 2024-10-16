@@ -1,4 +1,5 @@
-﻿using Model.Models;
+﻿using Model.Enums;
+using Model.Models;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -12,17 +13,51 @@ namespace DAL
     {
         public TicketDao() : base()
         {
+
         }
 
         public List<Ticket> GetTicketsEmployees()
         {
-            // Get the "tickets" with a "Priority" of "High"
             List<Ticket> tickets = Db.GetCollection<Ticket>("tickets")
                 .Aggregate()
-                .Match(e => e.Priority == "High")
+                .Match(e => e.status == "open")
+                .SortByDescending(t => t.created_at)
+                .Limit(25)
                 .ToList();
 
             return tickets;
+        }
+
+        public List<Ticket> GetTicketsByStatus(Status_Enum status)
+        {
+            List<Ticket> tickets = Db.GetCollection<Ticket>("tickets")
+                .Aggregate()
+                .Match(Builders<Ticket>.Filter.Eq(ticket => ticket.status, status.ToString()))
+                .SortByDescending(t => t.created_at)
+                .Limit(25)
+                .ToList();
+
+            return tickets;
+        }
+
+        public List<Ticket> SearchTickets(string searchQuery)
+        {
+            var tickets = Db.GetCollection<Ticket>("tickets")
+                .Aggregate()
+                .Match(Builders<Ticket>.Filter.Text(searchQuery))
+                .Sort(Builders<Ticket>.Sort.Descending(ticket => ticket.created_at))
+                .ToList();
+
+            return tickets;
+        }
+
+        public void ChangeTicketStatus(string ticketId, Status_Enum status)
+        {
+            var tickets = Db.GetCollection<Ticket>("tickets")
+                .UpdateOne(
+                Builders<Ticket>.Filter.Eq(ticket => ticket._id, ticketId),
+                Builders<Ticket>.Update.Set(ticket => ticket.status, status.ToString())
+                );
         }
 
         public List<TicketsCount> GetTicketsCountByStatus(string status)
@@ -31,7 +66,7 @@ namespace DAL
             {
                 List<TicketsCount> tickets = Db.GetCollection<Ticket>("tickets")
                     .Aggregate()
-                    .Match(e => e.Status == status)
+                    .Match(e => e.status == status)
                     .Group(
                         g => $"{status} tickets",
                         g => new TicketsCount
@@ -53,8 +88,8 @@ namespace DAL
         {
             List<TicketsCount> tickets = Db.GetCollection<Ticket>("tickets")
                 .Aggregate()
-                .Match(e => e.Status == "open"
-                && e.CreatedAt < DateTime.UtcNow)
+                .Match(e => e.status == "open"
+                && e.created_at < DateTime.UtcNow)
                 .Group(g => "Tickets Past Deadline",
                 g => new TicketsCount
                 {

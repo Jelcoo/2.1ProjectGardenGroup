@@ -1,6 +1,8 @@
 ﻿using Logic;
+using Model.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,18 +23,46 @@ namespace UI.UserControls
     /// </summary>
     public partial class TicketOverview : UserControl
     {
+        public ObservableCollection<Ticket> Tickets { get; set; }
+        TicketLogic ticketLogic;
+
         public TicketOverview()
         {
             InitializeComponent();
-        }
-        private void IncidentButton_Click(object sender, RoutedEventArgs e)
-        {
-            TicketLogic ticketLogic = new TicketLogic();
+            Tickets = new ObservableCollection<Ticket>();
+            this.DataContext = this;
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            ticketLogic = new TicketLogic();
+            List<Ticket> tickets = ticketLogic.GetTicketsEmployees();
 
+            Tickets.Clear();
+            foreach (var ticket in tickets)
+            {
+                Tickets.Add(ticket);
+            }
+            //ticketLogic.ChangeTicketStatus("b228c211-6b6e-4807-a41f-a515cc769be4", Model.Enums.Status_Enum.Closed);
+        }
+
+        private void tbFilterInput_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(TicketList.ItemsSource);
+            view.Filter = item => ((Ticket)item).title.ToLower().Contains(tbFilterInput.Text.ToLower());
+
+            if (tbFilterInput.Text.Length >= 3)
+            {
+                if (filterType.Text == "Title")
+                {
+                    List<Ticket> tickets = ticketLogic.SearchTickets(tbFilterInput.Text);
+                    Tickets.Clear();
+                    foreach (var ticket in tickets)
+                    {
+                        Tickets.Add(ticket);
+                    }
+                }
+            }
         }
     }
 }

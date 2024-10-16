@@ -62,12 +62,12 @@ namespace UI.UserControls
 
             // Haal de waarden op van de verschillende velden in het formulier
             newTicket._id = Guid.NewGuid().ToString();
-            newTicket.OccurredAt = (DateTime)Datepicker.SelectedDate; // Datum uit DatePicker
-            newTicket.ReportedBy = (PartialUser)reportedByDropdown.SelectedItem; // Gebruiker uit ComboBox (
-            newTicket.Priority = priorityDropDown.SelectedItem.ToString(); // Prioriteit uit ComboBox
-            newTicket.Description = txtBoxDescription.Text; // Beschrijving uit TextBox
-            newTicket.Status = Status_Enum.Open.ToString(); // 
-            newTicket.CreatedAt = DateTime.Now;
+            newTicket.occurred_at = (DateTime)Datepicker.SelectedDate; // Datum uit DatePicker
+            newTicket.reported_by = (PartialUser)reportedByDropdown.SelectedItem; // Gebruiker uit ComboBox (
+            newTicket.priority = priorityDropDown.SelectedItem.ToString(); // Prioriteit uit ComboBox
+            newTicket.description = txtBoxDescription.Text; // Beschrijving uit TextBox
+            newTicket.status = Status_Enum.Open.ToString(); // 
+            newTicket.created_at = DateTime.Now;
 
             // Verwerk het nieuwe ticket
             createTicketLogic.SaveTicket(newTicket);
