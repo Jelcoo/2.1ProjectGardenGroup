@@ -1,0 +1,4 @@
+C:\Users\jelco\Projects\GardenGroup\Logic\obj\Debug\net6.0\Logic.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\jelco\Projects\GardenGroup\Logic\obj\Debug\net6.0\Logic.AssemblyInfoInputs.cache
+C:\Users\jelco\Projects\GardenGroup\Logic\obj\Debug\net6.0\Logic.AssemblyInfo.cs
+C:\Users\jelco\Projects\GardenGroup\Logic\obj\Debug\net6.0\Logic.csproj.CoreCompileInputs.cache

@@ -1,0 +1,16 @@
+C:\Users\jelco\Projects\GardenGroup\DAL\bin\Debug\net6.0-windows\mongocrypt.dll
+C:\Users\jelco\Projects\GardenGroup\DAL\bin\Debug\net6.0-windows\DAL.deps.json
+C:\Users\jelco\Projects\GardenGroup\DAL\bin\Debug\net6.0-windows\DAL.dll
+C:\Users\jelco\Projects\GardenGroup\DAL\bin\Debug\net6.0-windows\DAL.pdb
+C:\Users\jelco\Projects\GardenGroup\DAL\bin\Debug\net6.0-windows\Model.dll
+C:\Users\jelco\Projects\GardenGroup\DAL\bin\Debug\net6.0-windows\Model.pdb
+C:\Users\jelco\Projects\GardenGroup\DAL\obj\Debug\net6.0-windows\DAL.csproj.AssemblyReference.cache
+C:\Users\jelco\Projects\GardenGroup\DAL\obj\Debug\net6.0-windows\DAL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\jelco\Projects\GardenGroup\DAL\obj\Debug\net6.0-windows\DAL.AssemblyInfoInputs.cache
+C:\Users\jelco\Projects\GardenGroup\DAL\obj\Debug\net6.0-windows\DAL.AssemblyInfo.cs
+C:\Users\jelco\Projects\GardenGroup\DAL\obj\Debug\net6.0-windows\DAL.csproj.CoreCompileInputs.cache
+C:\Users\jelco\Projects\GardenGroup\DAL\obj\Debug\net6.0-windows\DAL.csproj.CopyComplete
+C:\Users\jelco\Projects\GardenGroup\DAL\obj\Debug\net6.0-windows\DAL.dll
+C:\Users\jelco\Projects\GardenGroup\DAL\obj\Debug\net6.0-windows\refint\DAL.dll
+C:\Users\jelco\Projects\GardenGroup\DAL\obj\Debug\net6.0-windows\DAL.pdb
+C:\Users\jelco\Projects\GardenGroup\DAL\obj\Debug\net6.0-windows\ref\DAL.dll
