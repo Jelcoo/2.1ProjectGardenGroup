@@ -32,6 +32,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="DnsClient, Version=1.4.0.0, Culture=neutral, PublicKeyToken=4574bb5573c51424, processorArchitecture=MSIL">
       <HintPath>..\packages\DnsClient.1.4.0\lib\net471\DnsClient.dll</HintPath>
@@ -117,6 +120,7 @@
     <Compile Include="Databases_Model.cs" />
     <Compile Include="models\Employee.cs" />
     <Compile Include="models\Employees_Model.cs" />
+    <Compile Include="models\TicketsCount.cs" />
     <Compile Include="models\PartialUser.cs" />
     <Compile Include="models\Role.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
