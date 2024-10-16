@@ -16,12 +16,10 @@ namespace UI
             //databases = new Databases();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-
-            Dashboard dashboard = new Dashboard();
-            svMainContent.Content = dashboard;
-        }
-
+		private void Window_Loaded(object sender, RoutedEventArgs e)
+		{
+			LoginScreen loginScreen = new LoginScreen();
+			svMainContent.Content = loginScreen;
     }
+  }
 }
