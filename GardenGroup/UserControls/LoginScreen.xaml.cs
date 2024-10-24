@@ -43,6 +43,8 @@ namespace UI.UserControls
                 return;
             }
 
+            ApplicationStore.GetInstance().setLoggedInUser(userToLogin);
+
             Window parentWindow = Window.GetWindow(svMainContent);
             Button? dashButton = parentWindow.FindName("dashboardButton") as Button;
             Button? ticketsButton = parentWindow.FindName("ticketsButton") as Button;
