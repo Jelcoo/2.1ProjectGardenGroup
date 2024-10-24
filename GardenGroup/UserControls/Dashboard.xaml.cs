@@ -24,12 +24,5 @@ namespace UI.UserControls
         {
             InitializeComponent();
         }
-        private void ShowListBtn(object sender, RoutedEventArgs e)
-        {
-            MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
-            TicketOverview ticketOverview = new TicketOverview();
-
-            mainWindow.svMainContent.Content = ticketOverview;
-        }
     }
 }

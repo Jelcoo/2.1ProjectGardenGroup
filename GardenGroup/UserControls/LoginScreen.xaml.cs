@@ -1,4 +1,5 @@
 ﻿using Logic;
+using Model.Enums;
 using Model.Models;
 using System;
 using System.Collections.Generic;
@@ -22,9 +23,12 @@ namespace UI.UserControls
     /// </summary>
     public partial class LoginScreen : UserControl
     {
-        public LoginScreen()
+        private ScrollViewer svMainContent;
+
+        public LoginScreen(ScrollViewer svMainContent)
         {
             InitializeComponent();
+            this.svMainContent = svMainContent;
         }
         private void onLoginClick(object sender, RoutedEventArgs e)
         {
@@ -39,7 +43,19 @@ namespace UI.UserControls
                 return;
             }
 
-            errorLabel.Content = "It works";
+            Window parentWindow = Window.GetWindow(svMainContent);
+            Button? dashButton = parentWindow.FindName("dashboardButton") as Button;
+            Button? ticketsButton = parentWindow.FindName("ticketsButton") as Button;
+            Button? employeesButton = parentWindow.FindName("employeesButton") as Button;
+            dashButton.Visibility = Visibility.Visible;
+            ticketsButton.Visibility = Visibility.Visible;
+            if (userToLogin.role == Role.ServiceDesk)
+            {
+                employeesButton.Visibility = Visibility.Visible;
+            }
+
+            Dashboard screen = new Dashboard();
+            svMainContent.Content = screen;
         }
     }
 }

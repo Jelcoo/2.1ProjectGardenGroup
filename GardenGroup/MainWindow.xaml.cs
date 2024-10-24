@@ -15,11 +15,25 @@ namespace UI
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            //LoginScreen screen = new LoginScreen();
-            //Dashboard screen = new Dashboard();
-            //UserManagement screen = new UserManagement();
-            //TicketOverview screen = new TicketOverview();
-            CreateTicket screen = new CreateTicket();
+            LoginScreen screen = new LoginScreen(svMainContent);
+            svMainContent.Content = screen;
+        }
+
+        private void dashboardButton_Click(object sender, RoutedEventArgs e)
+        {
+            Dashboard screen = new Dashboard();
+            svMainContent.Content = screen;
+        }
+
+        private void ticketsButton_Click(object sender, RoutedEventArgs e)
+        {
+            TicketOverview screen = new TicketOverview();
+            svMainContent.Content = screen;
+        }
+
+        private void employeesButton_Click(object sender, RoutedEventArgs e)
+        {
+            UserManagement screen = new UserManagement();
             svMainContent.Content = screen;
         }
     }

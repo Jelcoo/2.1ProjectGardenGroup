@@ -22,13 +22,6 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Button Grid.Column="1" Width="100" Height="40" Grid.Row="0" Background="#FF6D8EE0" BorderBrush="{x:Null}"  Content="Show List" Margin="150,0,150,0" VerticalAlignment="Top" Click="ShowListBtn">
-            <Button.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="3"/>
-                </Style>
-            </Button.Resources>
-        </Button>
         <TextBlock Text="Current Incidents" FontSize="30" TextAlignment="center" Grid.Column="0" Grid.Row="0"/>
         <lvc:PieChart Series="{Binding ClosedAndOpenTicketsSeries}" MaxValue="{Binding GaugeTotalOpenTickets}" Grid.Row="1" Grid.Column="0" Margin="84,98,84,98"/>
         <lvc:PieChart Series="{Binding TicketsPastDeadlineSeries}" MaxValue="{Binding GaugeTotalPastDeadlineTickets}" Grid.Row="1" Grid.Column="1" Margin="84,98,84,98"/>
