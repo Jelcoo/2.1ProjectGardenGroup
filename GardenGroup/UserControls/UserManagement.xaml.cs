@@ -74,7 +74,6 @@ namespace UI.UserControls
 
         private void btnAddNewUser_Click(object sender, RoutedEventArgs e)
         {
-
             CreateEmployee createEmployeeControl = new CreateEmployee();
             this.Content = createEmployeeControl;
 

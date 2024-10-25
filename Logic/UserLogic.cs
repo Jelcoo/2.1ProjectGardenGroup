@@ -26,10 +26,11 @@ namespace Logic
         {
             return userDao.GetAllEmployees();
         }
-        public void UpdateUser(string id, string name, string email, string phoneNumber, Role role)
+        public void UpdateUser(PartialUser partialUser, Role role)
         {
-            userDao.UpdateEmployee(id, name, email, phoneNumber, role);
+            userDao.UpdateEmployee(partialUser, role);
         }
+
         // verwijder user door ID
         public void DeleteUser(string id)
         {
