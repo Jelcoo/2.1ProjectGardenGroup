@@ -45,19 +45,16 @@ namespace UI.UserControls
             cmBoxEditRole.SelectedItem = selectedUser.role;
         }
 
-        private void txtName_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            selectedUser.name = txtBoxEditName.Text;
-            selectedUser.email = txtBoxEditEmail.Text;
-            selectedUser.phone_number = txtBoxEditPhonenumber.Text;
-            selectedUser.role = (Role)cmBoxEditRole.SelectedItem;
+            PartialUser newPartialUser = new PartialUser();
+            newPartialUser.Id = selectedUser.Id;
+            newPartialUser.name = txtBoxEditName.Text;
+            newPartialUser.email = txtBoxEditEmail.Text;
+            newPartialUser.phone_number = txtBoxEditPhonenumber.Text;
+            Role role = (Role)cmBoxEditRole.SelectedItem;
 
-            userLogic.UpdateUser(selectedUser.Id, selectedUser.name, selectedUser.email, selectedUser.phone_number, selectedUser.role);
+            userLogic.UpdateUser(newPartialUser, role);
 
             MessageBox.Show("User updated successfully!");
 

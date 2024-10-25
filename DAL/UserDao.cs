@@ -75,19 +75,18 @@ namespace DAL
         }
 
         //methode om user informatie te updaten
-        public void UpdateEmployee(string id, string name, string email, string phoneNumber, Role role)
+        public void UpdateEmployee(PartialUser partialUser, Role role)
         {
             //update definition maken en de query uitvoeren
             //UpdateDefinition<Employee> updateDefinition = Builders<Employee>.Update
             var updateDefinition = Builders<Employee>.Update
-
-                .Set(u => u.name, name)
-                .Set(u => u.email, email)
-                .Set(u => u.phone_number, phoneNumber)
+                .Set(u => u.name, partialUser.name)
+                .Set(u => u.email, partialUser.email)
+                .Set(u => u.phone_number, partialUser.phone_number)
                 .Set(e => e.role, role);
 
             Db.GetCollection<Employee>("employees")
-                .UpdateOne(u => u.Id == id, updateDefinition);
+                .UpdateOne(u => u.Id == partialUser.Id, updateDefinition);
         }
 
         //methode om user te deleten met ID (delete)
