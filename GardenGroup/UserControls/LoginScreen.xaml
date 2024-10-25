@@ -9,14 +9,15 @@
     <Grid x:Name="LoginScreen1" Background="White">
         <Label x:Name="loginLabel" Content="Login" HorizontalAlignment="Center" Margin="0,91,0,0" VerticalAlignment="Top" FontSize="36"/>
 
-        <Label x:Name="emailInputLabel" Content="Email" Margin="0,163,0,0" HorizontalAlignment="Center"/>
+        <Label x:Name="emailInputLabel" Content="Email" Margin="0,163,0,261" HorizontalAlignment="Center"/>
         <TextBox x:Name="emailInput" Margin="0,189,0,0" VerticalAlignment="Top" Width="120"/>
 
-        <Label x:Name="passwordInputLabel" Content="Password" Margin="0,207,0,0" HorizontalAlignment="Center"/>
+        <Label x:Name="passwordInputLabel" Content="Password" Margin="0,207,0,217" HorizontalAlignment="Center"/>
         <PasswordBox x:Name="passwordInput" HorizontalAlignment="Center" Margin="0,233,0,0" VerticalAlignment="Top" Width="120"/>
 
         <Button x:Name="loginButton" Content="Login" HorizontalAlignment="Center" Margin="0,256,0,0" VerticalAlignment="Top" Width="120" Click="onLoginClick"/>
 
         <Label x:Name="errorLabel" Content="" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Margin="0,281,0,0" VerticalAlignment="Top" Foreground="Red" Width="780"/>
+        <Button x:Name="pwResetButton" Content="Reset Password" HorizontalAlignment="Center" Margin="0,420,0,0" VerticalAlignment="Top" Width="120" Click="pwResetButton_Click"/>
     </Grid>
 </UserControl>

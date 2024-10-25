@@ -4,6 +4,7 @@ using Model.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using Tools;
@@ -22,6 +23,11 @@ namespace Logic
             string hashedLoginPassword = PasswordTools.hashPassword(emp.password_salt, password);
             if (hashedLoginPassword != emp.password_hashed) return null;
 
+            return emp;
+        }
+        public Employee getEmployeeByEmail(string email)
+        {
+            Employee emp = userDao.getEmployeeByEmail(email);
             return emp;
         }
 
@@ -45,6 +51,21 @@ namespace Logic
         public void DeleteUser(string id)
         {
             userDao.DeleteEmployee(id);
+        }
+
+        public void SendResetEmail(Employee employee)
+        {
+            MailMessage mailMessage = MailTools.ConstructMailMessage(employee.email, "Password reset", "A password reset has been requested");
+            SmtpClient smtpClient = MailTools.GetSmtpClient();
+            try
+            {
+                smtpClient.Send(mailMessage);
+                Console.WriteLine("Email Sent Successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+            }
         }
     }
 }

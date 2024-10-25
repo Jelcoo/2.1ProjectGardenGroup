@@ -57,8 +57,12 @@ namespace UI.UserControls
                 employeesButton.Visibility = Visibility.Visible;
             }
 
-            Dashboard screen = new Dashboard();
-            svMainContent.Content = screen;
+            svMainContent.Content = new Dashboard();
+        }
+
+        private void pwResetButton_Click(object sender, RoutedEventArgs e)
+        {
+            svMainContent.Content = new PwResetScreen();
         }
     }
 }
