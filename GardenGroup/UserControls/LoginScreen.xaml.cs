@@ -62,7 +62,7 @@ namespace UI.UserControls
 
         private void pwResetButton_Click(object sender, RoutedEventArgs e)
         {
-            svMainContent.Content = new PwResetScreen();
+            svMainContent.Content = new PwResetLanding();
         }
     }
 }

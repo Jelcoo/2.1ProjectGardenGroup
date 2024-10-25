@@ -55,14 +55,17 @@ namespace Logic
 
         public void SendResetEmail(Employee employee)
         {
-            MailMessage mailMessage = MailTools.ConstructMailMessage(employee.email, "Password reset", "A password reset has been requested");
+            string emailContent = File.ReadAllText("..\\..\\..\\password-reset.html");
+            emailContent = emailContent
+                .Replace("{{name}}", employee.name)
+                .Replace("{{code}}", "DEBUG");
+            MailMessage mailMessage = MailTools.ConstructMailMessage(employee.email, "Password reset", emailContent);
+            mailMessage.IsBodyHtml = true;
             SmtpClient smtpClient = MailTools.GetSmtpClient();
             try
             {
                 smtpClient.Send(mailMessage);
-                Console.WriteLine("Email Sent Successfully.");
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 Console.WriteLine("Error: " + ex.Message);
             }

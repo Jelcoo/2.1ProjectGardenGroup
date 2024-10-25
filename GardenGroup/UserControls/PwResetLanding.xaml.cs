@@ -18,13 +18,13 @@ using System.Windows.Shapes;
 namespace UI.UserControls
 {
     /// <summary>
-    /// Interaction logic for PwResetScreen.xaml
+    /// Interaction logic for PwResetLanding.xaml
     /// </summary>
-    public partial class PwResetScreen : UserControl
+    public partial class PwResetLanding : UserControl
     {
         UserLogic userLogic = new UserLogic();
 
-        public PwResetScreen()
+        public PwResetLanding()
         {
             InitializeComponent();
         }
