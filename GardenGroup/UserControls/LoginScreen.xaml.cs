@@ -24,6 +24,7 @@ namespace UI.UserControls
     public partial class LoginScreen : UserControl
     {
         private ScrollViewer svMainContent;
+        UserLogic userLogic = new UserLogic();
 
         public LoginScreen(ScrollViewer svMainContent)
         {
@@ -34,9 +35,7 @@ namespace UI.UserControls
         {
             string email = emailInput.Text;
             string password = passwordInput.Password;
-
-            LoginLogic loginLogic = new LoginLogic();
-            Employee userToLogin = loginLogic.verifyLogin(email, password);
+            Employee userToLogin = userLogic.verifyLogin(email, password);
             if (userToLogin == null)
             {
                 errorLabel.Content = "The username or password is not valid";

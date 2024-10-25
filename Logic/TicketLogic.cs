@@ -16,6 +16,14 @@ namespace Logic
         {
         }
 
+        public List<PartialUser> GetEmployees()
+        {
+            return ticketDao.Getemployees();
+        }
+        public void SaveTicket(Ticket ticket)
+        {
+            ticketDao.SaveTicket(ticket);
+        }
         public List<Ticket> GetTicketsEmployees()
         {
             return ticketDao.GetTicketsEmployees();

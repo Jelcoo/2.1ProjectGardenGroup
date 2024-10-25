@@ -8,6 +8,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Tools;
 
 namespace DAL
 {
@@ -16,12 +17,21 @@ namespace DAL
         public UserDao() : base()
         {
         }
+
+        public Employee getEmployeeByEmail(string email)
+        {
+            List<Employee> emp = Db.GetCollection<Employee>("employees")
+                .Aggregate()
+                .Match(e => e.email == email)
+                .Limit(1).ToList();
+            if (emp.Count() == 0) return null;
+            return emp.First();
+        }
+
         public void CreateUser(string name, string email, string phoneNumber, string password, Role role)
         {
-            string salt = GenerateSalt();
-
-            string hashedPassword = HashPassword(salt, password);
-
+            string salt = PasswordTools.GenerateSalt();
+            string hashedPassword = PasswordTools.hashPassword(salt, password);
 
             Employee newEmployee = new Employee
             {
@@ -35,32 +45,6 @@ namespace DAL
             };
 
             Db.GetCollection<Employee>("employees").InsertOne(newEmployee);
-        }
-
-
-        private string GenerateSalt()
-        {
-            byte[] saltBytes = new byte[16];
-            using (var rng = new RNGCryptoServiceProvider())
-            {
-                rng.GetBytes(saltBytes);
-            }
-            return Convert.ToBase64String(saltBytes);
-        }
-        private string HashPassword(string salt, string password)
-        {
-            string saltedPassword = salt + password;
-            using (SHA256 sha256Hash = SHA256.Create())
-            {
-                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(saltedPassword));
-
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < bytes.Length; i++)
-                {
-                    builder.Append(bytes[i].ToString("x2"));
-                }
-                return builder.ToString();
-            }
         }
 
         //methode om alle users op te halen en een lijst van users terug te geven

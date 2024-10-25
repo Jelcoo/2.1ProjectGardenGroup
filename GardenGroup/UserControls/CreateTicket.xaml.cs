@@ -23,10 +23,10 @@ namespace UI.UserControls
     /// </summary>
     public partial class CreateTicket : UserControl
     {
-        private CreateTicketLogic createTicketLogic;
+        private TicketLogic ticketLogic;
         public CreateTicket()
         {
-            createTicketLogic = new CreateTicketLogic();
+            ticketLogic = new TicketLogic();
             InitializeComponent();
             FillEmployeeDropDown();
             FillRoleDropDown();
@@ -34,7 +34,7 @@ namespace UI.UserControls
         }
         public void FillEmployeeDropDown()
         {
-            List<PartialUser> employees = createTicketLogic.GetEmployees();
+            List<PartialUser> employees = ticketLogic.GetEmployees();
             foreach (PartialUser employee in employees)
             {
                 reportedByDropdown.Items.Add(employee);
@@ -70,7 +70,7 @@ namespace UI.UserControls
             newTicket.created_at = DateTime.Now;
 
             // Verwerk het nieuwe ticket
-            createTicketLogic.SaveTicket(newTicket);
+            ticketLogic.SaveTicket(newTicket);
 
             MessageBox.Show("Ticket succesvol aangemaakt!", "Bevestiging", MessageBoxButton.OK, MessageBoxImage.Information);
         }

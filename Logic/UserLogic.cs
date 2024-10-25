@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tools;
 
 namespace Logic
 {
@@ -13,7 +14,16 @@ namespace Logic
     {
         UserDao userDao = new UserDao();
 
-        public UserLogic() { }
+        public Employee verifyLogin(string email, string password)
+        {
+            Employee emp = userDao.getEmployeeByEmail(email);
+            if (emp == null) return null;
+
+            string hashedLoginPassword = PasswordTools.hashPassword(emp.password_salt, password);
+            if (hashedLoginPassword != emp.password_hashed) return null;
+
+            return emp;
+        }
 
         //methode om user te creeeren
         public void CreateUser(string name, string email, string phoneNumber, string password, Role role)
