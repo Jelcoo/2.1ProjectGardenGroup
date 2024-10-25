@@ -46,6 +46,8 @@ namespace UI.UserControls
             ApplicationStore.GetInstance().setLoggedInUser(userToLogin);
 
             Window parentWindow = Window.GetWindow(svMainContent);
+            Label? loggedInAsLabel = parentWindow.FindName("loggedInAsLabel") as Label;
+            loggedInAsLabel.Content = "Welcome " + userToLogin.name + "! You are a " + userToLogin.role.ToString();
             Button? dashButton = parentWindow.FindName("dashboardButton") as Button;
             Button? ticketsButton = parentWindow.FindName("ticketsButton") as Button;
             Button? employeesButton = parentWindow.FindName("employeesButton") as Button;

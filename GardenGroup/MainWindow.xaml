@@ -13,12 +13,13 @@
             <ColumnDefinition Width="10*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="150"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <ScrollViewer x:Name="svMainContent" Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Auto"/>
-        <Button x:Name="dashboardButton" Grid.Column="1" Content="Dashboard" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18" Visibility="Hidden" Click="dashboardButton_Click"/>
-        <Button x:Name="ticketsButton" Grid.Column="1" Content="Tickets" HorizontalAlignment="Left" Margin="96,0,0,0" VerticalAlignment="Center" FontSize="18" Visibility="Hidden" Click="ticketsButton_Click"/>
-        <Button x:Name="employeesButton" Grid.Column="1" Content="Employees" HorizontalAlignment="Left" Margin="159,0,0,0" VerticalAlignment="Center" FontSize="18" Visibility="Hidden" Click="employeesButton_Click"/>
+        <Button x:Name="dashboardButton" Grid.Column="1" Content="Dashboard" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18" Visibility="Hidden" Click="dashboardButton_Click" Height="28" Width="91"/>
+        <Button x:Name="ticketsButton" Grid.Column="1" Content="Tickets" HorizontalAlignment="Left" Margin="96,0,0,0" VerticalAlignment="Center" FontSize="18" Visibility="Hidden" Click="ticketsButton_Click" Height="28" Width="58"/>
+        <Button x:Name="employeesButton" Grid.Column="1" Content="Employees" HorizontalAlignment="Left" Margin="159,0,0,0" VerticalAlignment="Center" FontSize="18" Visibility="Hidden" Click="employeesButton_Click" Height="28" Width="89"/>
+        <Label x:Name="loggedInAsLabel" Grid.Column="1" Content="" HorizontalAlignment="Left" Margin="10,109,0,0" VerticalAlignment="Top" FontSize="16"/>
     </Grid>
 </Window>
