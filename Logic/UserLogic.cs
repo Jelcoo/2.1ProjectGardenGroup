@@ -56,6 +56,8 @@ namespace Logic
 
         public void SendResetEmail(Employee employee)
         {
+            if (employee == null) return;
+
             string code = GetResetCode(employee);
             string emailContent = File.ReadAllText("..\\..\\..\\password-reset.html");
             emailContent = emailContent

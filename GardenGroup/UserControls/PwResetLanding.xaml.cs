@@ -38,10 +38,10 @@ namespace UI.UserControls
                 return;
             }
             Employee employee = userLogic.getEmployeeByEmail(email);
-            if (employee != null)
-            {
-                userLogic.SendResetEmail(employee);
-            }
+            userLogic.SendResetEmail(employee);
+
+            MainWindow window = Window.GetWindow(this) as MainWindow;
+            window.svMainContent.Content = new PwResetCode(employee);
         }
     }
 }
