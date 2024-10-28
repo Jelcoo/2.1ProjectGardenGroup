@@ -31,7 +31,7 @@ namespace UI.UserControls
             InitializeComponent();
             this.svMainContent = svMainContent;
         }
-        private void onLoginClick(object sender, RoutedEventArgs e)
+        private void loginButton_Click(object sender, RoutedEventArgs e)
         {
             string email = emailInput.Text;
             string password = passwordInput.Password;

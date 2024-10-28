@@ -5,7 +5,7 @@ namespace Tools
 {
     public class PasswordTools
     {
-        public static string hashPassword(string salt, string password)
+        public static string HashPassword(string salt, string password)
         {
             string salty = salt + password;
             using (SHA256 sha256Hash = SHA256.Create())

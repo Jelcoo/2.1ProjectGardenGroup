@@ -20,7 +20,7 @@ namespace Logic
             Employee emp = userDao.getEmployeeByEmail(email);
             if (emp == null) return null;
 
-            string hashedLoginPassword = PasswordTools.hashPassword(emp.password_salt, password);
+            string hashedLoginPassword = PasswordTools.HashPassword(emp.password_salt, password);
             if (hashedLoginPassword != emp.password_hashed) return null;
 
             return emp;

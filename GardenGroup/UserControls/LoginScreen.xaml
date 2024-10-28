@@ -15,7 +15,7 @@
         <Label x:Name="passwordInputLabel" Content="Password" Margin="0,207,0,217" HorizontalAlignment="Center"/>
         <PasswordBox x:Name="passwordInput" HorizontalAlignment="Center" Margin="0,233,0,0" VerticalAlignment="Top" Width="120"/>
 
-        <Button x:Name="loginButton" Content="Login" HorizontalAlignment="Center" Margin="0,256,0,0" VerticalAlignment="Top" Width="120" Click="onLoginClick"/>
+        <Button x:Name="loginButton" Content="Login" HorizontalAlignment="Center" Margin="0,256,0,0" VerticalAlignment="Top" Width="120" Click="loginButton_Click"/>
 
         <Label x:Name="errorLabel" Content="" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Margin="0,281,0,0" VerticalAlignment="Top" Foreground="Red" Width="780"/>
         <Button x:Name="pwResetButton" Content="Reset Password" HorizontalAlignment="Center" Margin="0,420,0,0" VerticalAlignment="Top" Width="120" Click="pwResetButton_Click"/>

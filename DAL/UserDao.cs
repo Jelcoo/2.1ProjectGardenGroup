@@ -31,7 +31,7 @@ namespace DAL
         public void CreateUser(string name, string email, string phoneNumber, string password, Role role)
         {
             string salt = PasswordTools.GenerateSalt();
-            string hashedPassword = PasswordTools.hashPassword(salt, password);
+            string hashedPassword = PasswordTools.HashPassword(salt, password);
 
             Employee newEmployee = new Employee
             {
