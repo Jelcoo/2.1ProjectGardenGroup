@@ -30,5 +30,16 @@ namespace Tools
             }
             return Convert.ToBase64String(saltBytes);
         }
+
+        public static string GenerateVerifyCode(int codeLength)
+        {
+            StringBuilder codeBuilder = new StringBuilder();
+            for (int i = 0; i < codeLength; i++)
+            {
+                codeBuilder.Append(GenericTools.GenerateNumber(0, 9));
+            }
+
+            return codeBuilder.ToString();
+        }
     }
 }

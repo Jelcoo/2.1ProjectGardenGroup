@@ -4,6 +4,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -78,6 +79,16 @@ namespace DAL
         {
             Db.GetCollection<Employee>("employees")
                 .DeleteOne(Builders<Employee>.Filter.Eq(e => e.Id, id));
+        }
+
+        public void UpdateEmployeeResetCode(Employee employee)
+        {
+            var updateDefinition = Builders<Employee>.Update
+                .Set(u => u.password_reset_hashed, employee.password_reset_hashed)
+                .Set(u => u.password_reset_salt, employee.password_reset_salt);
+
+            Db.GetCollection<Employee>("employees")
+                .UpdateOne(u => u.Id == employee.Id, updateDefinition);
         }
 
         //public List<Employee> GetEmployeesWithTickets()

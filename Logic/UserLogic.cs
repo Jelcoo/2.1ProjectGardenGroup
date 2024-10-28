@@ -14,6 +14,7 @@ namespace Logic
     public class UserLogic
     {
         UserDao userDao = new UserDao();
+        const int CODE_LENGTH = 6;
 
         public Employee verifyLogin(string email, string password)
         {
@@ -55,10 +56,11 @@ namespace Logic
 
         public void SendResetEmail(Employee employee)
         {
+            string code = GetResetCode(employee);
             string emailContent = File.ReadAllText("..\\..\\..\\password-reset.html");
             emailContent = emailContent
                 .Replace("{{name}}", employee.name)
-                .Replace("{{code}}", "DEBUG");
+                .Replace("{{code}}", code);
             MailMessage mailMessage = MailTools.ConstructMailMessage(employee.email, "Password reset", emailContent);
             mailMessage.IsBodyHtml = true;
             SmtpClient smtpClient = MailTools.GetSmtpClient();
@@ -69,6 +71,19 @@ namespace Logic
             {
                 Console.WriteLine("Error: " + ex.Message);
             }
+        }
+
+        private string GetResetCode(Employee employee)
+        {
+            string code = PasswordTools.GenerateVerifyCode(CODE_LENGTH);
+            string codeSalt = PasswordTools.GenerateSalt();
+            string codeHashed = PasswordTools.HashPassword(codeSalt, code);
+
+            employee.password_reset_salt = codeSalt;
+            employee.password_reset_hashed = codeHashed;
+            userDao.UpdateEmployeeResetCode(employee);
+
+            return code;
         }
     }
 }
