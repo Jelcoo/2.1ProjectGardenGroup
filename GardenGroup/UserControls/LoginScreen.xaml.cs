@@ -33,7 +33,7 @@ namespace UI.UserControls
         {
             string email = emailInput.Text;
             string password = passwordInput.Password;
-            Employee userToLogin = userLogic.verifyLogin(email, password);
+            Employee userToLogin = userLogic.VerifyLogin(email, password);
             if (userToLogin == null)
             {
                 errorLabel.Content = "The username or password is not valid";

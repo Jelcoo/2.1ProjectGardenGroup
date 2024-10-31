@@ -90,6 +90,25 @@ namespace DAL
             Db.GetCollection<Employee>("employees")
                 .UpdateOne(u => u.Id == employee.Id, updateDefinition);
         }
+         
+        public void UpdateEmployeeResetPassword(Employee employee, string hashedPassword)
+        {
+            var updateDefinition = Builders<Employee>.Update
+                .Set(u => u.password_hashed, hashedPassword);
+
+            Db.GetCollection<Employee>("employees")
+                .UpdateOne(u => u.Id == employee.Id, updateDefinition);
+        }
+
+        public void UpdateEmployeeClearCode(Employee employee)
+        {
+            var updateDefinition = Builders<Employee>.Update
+                .Set(u => u.password_reset_hashed, null)
+                .Set(u => u.password_reset_salt, null);
+
+            Db.GetCollection<Employee>("employees")
+                .UpdateOne(u => u.Id == employee.Id, updateDefinition);
+        }
 
         //public List<Employee> GetEmployeesWithTickets()
         //{

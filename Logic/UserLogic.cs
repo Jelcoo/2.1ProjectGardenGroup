@@ -16,7 +16,7 @@ namespace Logic
         UserDao userDao = new UserDao();
         const int CODE_LENGTH = 6;
 
-        public Employee verifyLogin(string email, string password)
+        public Employee VerifyLogin(string email, string password)
         {
             Employee emp = userDao.getEmployeeByEmail(email);
             if (emp == null) return null;
@@ -86,6 +86,17 @@ namespace Logic
             userDao.UpdateEmployeeResetCode(employee);
 
             return code;
+        }
+
+        public void ResetPassword(Employee employee, string newPassword)
+        {
+            string hashedPassword = PasswordTools.HashPassword(employee.password_salt, newPassword);
+            userDao.UpdateEmployeeResetPassword(employee, hashedPassword);
+        }
+
+        public void ClearResetCode(Employee employee)
+        {
+            userDao.UpdateEmployeeClearCode(employee);
         }
     }
 }

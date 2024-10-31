@@ -1,4 +1,5 @@
-﻿using Model.Models;
+﻿using Logic;
+using Model.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,12 +22,30 @@ namespace UI.UserControls
     /// </summary>
     public partial class PwResetReset : UserControl
     {
+        UserLogic userLogic = new UserLogic();
         private Employee employee;
 
         public PwResetReset(Employee employee)
         {
             InitializeComponent();
             this.employee = employee;
+        }
+
+        private void resetButton_Click(object sender, RoutedEventArgs e)
+        {
+            string password = passwordInput.Password;
+            if (password == "")
+            {
+                errorLabel.Content = "Please enter a valid password!";
+                return;
+            }
+
+            userLogic.ResetPassword(employee, password);
+            userLogic.ClearResetCode(employee);
+            ApplicationStore.GetInstance().setLoggedInUser(employee);
+
+            MainWindow window = Window.GetWindow(this) as MainWindow;
+            window.svMainContent.Content = new Dashboard();
         }
     }
 }
