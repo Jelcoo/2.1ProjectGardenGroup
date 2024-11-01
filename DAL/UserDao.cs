@@ -52,7 +52,16 @@ namespace DAL
         {
             List<Employee> employees = Db.GetCollection<Employee>("employees")
                 .Aggregate()
-                .Match(Builders<Employee>.Filter.Empty)
+                .Project(employee => new Employee
+                {
+                    Id = employee.Id,
+                    name = employee.name,
+                    email = employee.email,
+                    phone_number = employee.phone_number,
+                    role = employee.role,
+                    password_hashed = employee.password_hashed,
+                    password_salt = employee.password_salt
+                })
                 .ToList();
 
             return employees;

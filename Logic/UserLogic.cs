@@ -13,6 +13,8 @@ namespace Logic
     public class UserLogic
     {
         UserDao userDao = new UserDao();
+        private readonly TicketDao ticketDao = new TicketDao(); // Initialize TicketDao
+
 
         public Employee verifyLogin(string email, string password)
         {
@@ -39,6 +41,15 @@ namespace Logic
         public void UpdateUser(PartialUser partialUser, Role role)
         {
             userDao.UpdateEmployee(partialUser, role);
+
+            UpdateEmployeeNameInTickets(partialUser);
+
+        }
+
+        private void UpdateEmployeeNameInTickets(PartialUser partialUser)
+        {
+            // Use ticketDao to update relevant ticket documents
+            ticketDao.UpdateEmployeeNameInTickets(partialUser.Id, partialUser.name);
         }
 
         // verwijder user door ID

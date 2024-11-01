@@ -17,6 +17,9 @@ namespace UI
         {
             LoginScreen screen = new LoginScreen(svMainContent);
             svMainContent.Content = screen;
+
+           // UserManagement userManagement = new UserManagement();
+           // svMainContent.Content = userManagement;
         }
 
         private void dashboardButton_Click(object sender, RoutedEventArgs e)

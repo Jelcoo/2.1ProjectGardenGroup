@@ -130,5 +130,22 @@ namespace DAL
             return tickets;
 
         }
+
+        public void UpdateEmployeeNameInTickets(string employeeId, string newName)
+        {
+            // Update the employee's name in all tickets where they are referenced
+            var filter = Builders<Ticket>.Filter.Or(
+                Builders<Ticket>.Filter.Eq("reported_by.Id", employeeId),
+                Builders<Ticket>.Filter.Eq("assigned_to.Id", employeeId),
+                Builders<Ticket>.Filter.Eq("resolved_by.Id", employeeId)
+            );
+
+            var update = Builders<Ticket>.Update
+                .Set("reported_by.name", newName)
+                .Set("assigned_to.name", newName)
+                .Set("resolved_by.name", newName);
+
+            Db.GetCollection<Ticket>("tickets").UpdateMany(filter, update);
+        }
     }
 }
