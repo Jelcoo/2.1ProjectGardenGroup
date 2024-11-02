@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,17 +10,22 @@ namespace Model.Models
 {
     public class Ticket
     {
-        public string _id;
-        public string title;
-        public string description;
-        public string status;
-        public string priority;
-        public Comment[] comments;
-        public PartialUser reported_by;
-        public PartialUser assigned_to;
-        public PartialUser resolved_by;
-        public DateTime occurred_at;
-        public DateTime resolved_at;
-        public DateTime created_at;
+        [BsonId]
+        public ObjectId _id {  get; set; }
+        public string title { get; set; }
+        public string description { get; set; }
+        public string status { get; set; }
+        public string priority { get; set; }
+
+        [BsonRepresentation(BsonType.String)]
+
+        public List<ObjectId> commentIds { get; set; } = new List<ObjectId>();  // id opslaan van de comment alleen
+
+        public PartialUser reported_by { get; set; }
+        public PartialUser assigned_to { get; set; }
+        public PartialUser resolved_by { get; set; }
+        public DateTime occurred_at { get; set; }
+        public DateTime resolved_at {  get; set; }
+        public DateTime created_at { get; set; }
     }
 }

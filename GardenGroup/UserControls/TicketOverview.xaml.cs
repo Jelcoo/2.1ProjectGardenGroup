@@ -24,7 +24,7 @@ namespace UI.UserControls
     public partial class TicketOverview : UserControl
     {
         public ObservableCollection<Ticket> Tickets { get; set; }
-        TicketLogic ticketLogic;
+        private TicketLogic ticketLogic;
 
         public TicketOverview()
         {
@@ -62,6 +62,17 @@ namespace UI.UserControls
                         Tickets.Add(ticket);
                     }
                 }
+            }
+        }
+
+        private void ViewTicketDetails_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedTicket = (Ticket)((Button)sender).DataContext;
+
+            if (selectedTicket != null)
+            {
+                var ticketDetail = new TicketDetail(selectedTicket._id.ToString());
+                ticketDetail.ShowDialog(); 
             }
         }
     }

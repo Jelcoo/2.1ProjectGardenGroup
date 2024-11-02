@@ -1,5 +1,6 @@
 ﻿using Model.Enums;
 using Model.Models;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -81,7 +82,7 @@ namespace DAL
             return tickets;
         }
 
-        public void ChangeTicketStatus(string ticketId, Status_Enum status)
+        public void ChangeTicketStatus(ObjectId ticketId, Status_Enum status)
         {
             var tickets = Db.GetCollection<Ticket>("tickets")
                 .UpdateOne(
@@ -146,6 +147,19 @@ namespace DAL
                 .Set("resolved_by.name", newName);
 
             Db.GetCollection<Ticket>("tickets").UpdateMany(filter, update);
+        }
+
+        public Ticket GetTicketById(ObjectId ticketId)
+        {
+            var filter = Builders<Ticket>.Filter.Eq("_id", ticketId);
+            return Db.GetCollection<Ticket>("tickets").Find(filter).FirstOrDefault();
+        }
+
+        public void AddCommentIdToTicket(ObjectId ticketId, ObjectId commentId)
+        {
+            var filter = Builders<Ticket>.Filter.Eq("_id", ticketId);
+            var update = Builders<Ticket>.Update.Push("commentIds", commentId);
+            Db.GetCollection<Ticket>("tickets").UpdateOne(filter, update);
         }
     }
 }

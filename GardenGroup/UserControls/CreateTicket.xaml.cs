@@ -61,7 +61,6 @@ namespace UI.UserControls
             Ticket newTicket = new Ticket();
 
             // Haal de waarden op van de verschillende velden in het formulier
-            newTicket._id = Guid.NewGuid().ToString();
             newTicket.occurred_at = (DateTime)Datepicker.SelectedDate; // Datum uit DatePicker
             newTicket.reported_by = (PartialUser)reportedByDropdown.SelectedItem; // Gebruiker uit ComboBox (
             newTicket.priority = priorityDropDown.SelectedItem.ToString(); // Prioriteit uit ComboBox
