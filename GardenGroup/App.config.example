@@ -3,4 +3,11 @@
 	<connectionStrings>
 		<add name="DBConnectionString" connectionString="" />
 	</connectionStrings>
+	<appSettings>
+		<add key="senderEmail" value="test@example.com" />
+		<add key="smtpHost" value="smtp.example.com" />
+		<add key="smtpPort" value="587" />
+		<add key="smtpUsername" value="test@example.com" />
+		<add key="smtpPassword" value="myPassword" />
+	</appSettings>
 </configuration>
