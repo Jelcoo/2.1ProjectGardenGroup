@@ -4,8 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UI.UserControls"
-             mc:Ignorable="d" Loaded="UserControl_Loaded"
-			 DataContext="this">
+             mc:Ignorable="d" Loaded="UserControl_Loaded">
 
 	<Grid Background="White" MinWidth="550">
 		<Grid.RowDefinitions>
@@ -55,7 +54,15 @@
 				<DataGridTextColumn Header="Assigned to" Binding="{Binding assigned_to.name}"/>
 				<!-- <DataGridTextColumn Header="Occurred at" Binding="{Binding occurred_at}"/> -->
 				<DataGridTextColumn Header="Created at" Binding="{Binding created_at}"/>
-			</DataGrid.Columns>
+
+                <DataGridTemplateColumn Header="Actions">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="View Details" Click="ViewTicketDetails_Click" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
 		</DataGrid>
         <!-- Overlay voor geen resultaten gevonden -->
         <Border x:Name="NoResultsOverlay" Visibility="Collapsed" Background="#AAFFFFFF" 
