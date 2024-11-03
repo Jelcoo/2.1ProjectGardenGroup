@@ -23,13 +23,15 @@ namespace UI.UserControls
     /// </summary>
     public partial class TicketOverview : UserControl
     {
-        public ObservableCollection<Ticket> Tickets { get; set; }
+		private ScrollViewer svMainContent;
+		public ObservableCollection<Ticket> Tickets { get; set; }
         TicketLogic ticketLogic;
 
-        public TicketOverview()
+        public TicketOverview(ScrollViewer svMainContent)
         {
             InitializeComponent();
-            Tickets = new ObservableCollection<Ticket>();
+			this.svMainContent = svMainContent;
+			Tickets = new ObservableCollection<Ticket>();
             this.DataContext = this;
         }
 
@@ -64,5 +66,19 @@ namespace UI.UserControls
                 }
             }
         }
-    }
+
+		private void IncidentButton_Click(object sender, RoutedEventArgs e)
+		{
+			if (svMainContent == null)
+			{
+				MessageBox.Show("ScrollViewer is niet ingesteld", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				return;
+			}
+			// Maak een nieuwe instantie van de CreateTicket UserControl
+			CreateTicket createTicketScreen = new CreateTicket(svMainContent);
+
+			// Stel de Content van svMainContent in om te navigeren naar de CreateTicket pagina
+			svMainContent.Content = createTicketScreen;
+		}
+	}
 }
