@@ -14,6 +14,8 @@ namespace Logic
     public class UserLogic
     {
         UserDao userDao = new UserDao();
+        private readonly TicketDao ticketDao = new TicketDao();
+
         const int CODE_LENGTH = 6;
 
         public Employee VerifyLogin(string email, string password)
@@ -46,6 +48,14 @@ namespace Logic
         public void UpdateUser(PartialUser partialUser, Role role)
         {
             userDao.UpdateEmployee(partialUser, role);
+
+            UpdateEmployeeNameInTickets(partialUser);
+
+        }
+
+        private void UpdateEmployeeNameInTickets(PartialUser partialUser)
+        {
+            ticketDao.UpdateEmployeeNameInTickets(partialUser.Id, partialUser.name);
         }
 
         // verwijder user door ID

@@ -53,7 +53,16 @@ namespace DAL
         {
             List<Employee> employees = Db.GetCollection<Employee>("employees")
                 .Aggregate()
-                .Match(Builders<Employee>.Filter.Empty)
+                .Project(employee => new Employee
+                {
+                    Id = employee.Id,
+                    name = employee.name,
+                    email = employee.email,
+                    phone_number = employee.phone_number,
+                    role = employee.role,
+                    password_hashed = employee.password_hashed,
+                    password_salt = employee.password_salt
+                })
                 .ToList();
 
             return employees;
@@ -115,10 +124,10 @@ namespace DAL
         //  var pipeline = Db.GetCollection<Employee>("employees")
         //    .Aggregate()
         //  .Lookup<Employee, Ticket, Employee>(
-        //    "tickets",          // The collection you're joining with
-        //  "Id",               // Local field in employees
-        //"EmployeeId",       // Field in tickets collection
-        //@as: "Tickets"      // The name of the new array field in the result
+        //    "tickets",         
+        //  "Id",               
+        //"EmployeeId",       
+        //@as: "Tickets"      
         // )
         //.ToList();
 

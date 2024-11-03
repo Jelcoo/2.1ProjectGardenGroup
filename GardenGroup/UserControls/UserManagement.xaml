@@ -6,12 +6,21 @@
              xmlns:local="clr-namespace:UI.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
     <Grid Background="White">
-        <TextBlock Text="User Management" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10"/>
-        <!-- DataGrid to Display Users -->
-        <DataGrid x:Name="dataGridUsers" AutoGenerateColumns="False" CanUserAddRows="False" HorizontalScrollBarVisibility="Disabled" Margin="0,57,0,0" ColumnWidth="SizeToCells">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Welcome admin! You are logged in as a ServiceDesk employee." 
+                   FontSize="16" FontWeight="Bold" Grid.Row="0" HorizontalAlignment="Center" Margin="10"/>
+
+        <DataGrid x:Name="dataGridUsers" Grid.Row="1" AutoGenerateColumns="False" CanUserAddRows="False"
+                  HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Margin="10" ColumnWidth="SizeToCells">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="100"/>
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="150"/>
                 <DataGridTextColumn Header="Name" Binding="{Binding name}" Width="150"/>
                 <DataGridTextColumn Header="Email" Binding="{Binding email}" Width="200"/>
                 <DataGridTextColumn Header="Phone" Binding="{Binding phone_number}" Width="150"/>
@@ -19,9 +28,21 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <!-- Buttons for Edit and Delete -->
-        <Button Content="Edit" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="100" Height="30" Margin="10,0,0,10" Click="btnEdit_Click"/>
-        <Button Content="Delete" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="100" Height="30" Margin="120,0,0,10" Click="btnDelete_Click"/>
-        <Button Content="Add New User" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="150" Height="30" Margin="0,0,10,10" Click="btnAddNewUser_Click"/>
+        <Grid Grid.Row="2" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.Column="0">
+                <Button Content="Edit" Width="100" Height="30" Margin="0,0,10,0" Click="btnEdit_Click"/>
+                <Button Content="Delete" Width="100" Height="30" Margin="0,0,10,0" Click="btnDelete_Click"/>
+            </StackPanel>
+
+            <Border BorderBrush="Black" BorderThickness="1" CornerRadius="7" Background="#FF159BD4" Width="150" Height="30" HorizontalAlignment="Right" Grid.Column="2">
+                <Button x:Name="AddUserButton" Content="Add New User" FontSize="14" BorderThickness="0" Foreground="White" Background="{x:Null}" Click="btnAddNewUser_Click"/>
+            </Border>
+        </Grid>
     </Grid>
 </UserControl>
