@@ -50,105 +50,75 @@ namespace UI.UserControls
 
 		private void tbFilterInput_TextChanged(object sender, TextChangedEventArgs e)
 		{
-			// Verkrijg de huidige weergave van de DataGrid als CollectionView
+			// Haalt de huidige weergave van de DataGrid op als een CollectionView.
 			CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(TicketList.ItemsSource);
+
+			// Zet de invoer in kleine letters voor eenvoudiger vergelijken.
 			string filterText = tbFilterInput.Text.ToLower();
 
-			// Controleer of het filtertekstveld leeg is
-			if (string.IsNullOrWhiteSpace(filterText))
+			// Stel de filterfunctie voor de CollectionView in.
+			view.Filter = item =>
 			{
-				// Reset het filter en verberg de melding
-				view.Filter = null;
-				NoResultsOverlay.Visibility = Visibility.Collapsed;
-			}
-			else
-			{
-				// Stel een filter in dat de tickets vergelijkt met de ingevoerde tekst
-				view.Filter = item =>
+				if (item is Ticket ticket)
 				{
-					// Controleer of het item een Ticket-object is
-					if (item is Ticket ticket)
+					// Definieer bools voor match per eigenschap.
+					bool titleMatch = ticket.title.ToLower().Contains(filterText);
+					bool statusMatch = ticket.status.ToString().ToLower().Contains(filterText);
+					bool assignedToMatch = ticket.assigned_to.name.ToLower().Contains(filterText);
+
+					// Toepassen van de geselecteerde filterlogica.
+					switch (filterType.Text)
 					{
-						// Controleer of het ticket voldoet aan de filtercriteria
-						return MatchesFilter(ticket, filterText);
+						case "Title":
+							return titleMatch;
+						case "Status":
+							return statusMatch;
+						case "Assigned to":
+							return assignedToMatch;
+						case "AND (&) OR (|)":
+							return ApplyComplexFilter(ticket, filterText);
+						default:
+							return false;
 					}
-
-					// Als het item geen Ticket is, wordt het niet weergegeven in de DataGrid
-					return false;
-				};
-
-				// Controleer of er geen resultaten zijn na het toepassen van het filter
-				if (view.IsEmpty)
-				{
-					// Toon de overlay als er geen resultaten zijn
-					NoResultsOverlay.Visibility = Visibility.Visible;
 				}
-				else
-				{
-					// Verberg de overlay als er resultaten zijn
-					NoResultsOverlay.Visibility = Visibility.Collapsed;
-				}
-			}; view.Refresh();
-		}
+				return false;
+			};
 
-		private bool MatchesFilter(Ticket ticket, string filterText)
-		{
-			switch (filterType.Text)
-			{
-				case "Title":
-					return ticket.title.ToLower().Contains(filterText);
-				case "Status":
-					return ticket.status.ToString().ToLower().Contains(filterText);
-				case "Assigned to":
-					return ticket.assigned_to.name.ToLower().Contains(filterText);
-				case "Priority":
-					return ticket.priority.ToString().ToLower().Contains(filterText);
-				case "Created at":
-					return ticket.created_at.ToString().ToLower().Contains(filterText);
-				case "AND (&) OR (|)":
-					return ApplyComplexFilter(ticket, filterText);
-
-				default:
-					return false;
-			}
+			view.Refresh(); // Ververs de weergave om de filterresultaten toe te passen.
 		}
 
 		private bool ApplyComplexFilter(Ticket ticket, string filterText)
 		{
-			// Split de filtertekst in AND-segmenten
+			// Splitst de filtertekst op "and" en "&" om AND-segmenten te krijgen.
 			string[] andSegments = filterText.Split(new string[] { " and ", "&" }, System.StringSplitOptions.None);
 			bool andResult = andSegments.All(segment => SegmentMatches(ticket, segment.Trim()));
 
-			// Controleer of er OR-operatoren in de filtertekst aanwezig zijn
+			// Controleert of er "or" of "|" in de filtertekst aanwezig is voor OR-segmenten.
 			if (filterText.Contains(" or ") || filterText.Contains("|"))
 			{
 				string[] orSegments = filterText.Split(new string[] { " or ", "|" }, System.StringSplitOptions.None);
-				return orSegments.Any(segment => SegmentMatches(ticket, segment.Trim()));
+
+				foreach (string segment in orSegments)
+				{
+					if (SegmentMatches(ticket, segment.Trim()))
+					{
+						return true; // Retourneer true zodra een OR-segment overeenkomt.
+					}
+				}
+				return false; // Retourneer false als geen enkel OR-segment overeenkomt.
 			}
 
-			return andResult; // Retourneer het AND-resultaat als er geen OR-segmenten zijn
+			return andResult; // Retourneer het resultaat van de AND-logica als er geen OR-segmenten zijn.
 		}
 
 		private bool SegmentMatches(Ticket ticket, string segment)
 		{
-			// Controleer of het segment voorkomt in een van de ticket eigenschappen
 			bool titleMatch = ticket.title.ToLower().Contains(segment);
 			bool statusMatch = ticket.status.ToString().ToLower().Contains(segment);
 			bool assignedToMatch = ticket.assigned_to.name.ToLower().Contains(segment);
-			bool priorityMatch = ticket.priority.ToString().ToLower().Contains(segment);
-			bool createdAtMatch = ticket.created_at.ToString().ToLower().Contains(segment);
 
-			// Retourneer true als het segment in een van de eigenschappen voorkomt
-			return titleMatch || statusMatch || assignedToMatch || priorityMatch || createdAtMatch;
-		}
-
-		private void CloseNoResultsOverlay(object sender, RoutedEventArgs e)
-		{
-			// Verberg de overlay en reset het filter
-			NoResultsOverlay.Visibility = Visibility.Collapsed;
-			CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(TicketList.ItemsSource);
-			view.Filter = null; // Verwijder het filter om de volledige lijst weer te geven
-			tbFilterInput.Clear(); // Maak het invoerveld leeg
+			// Retourneer true als het segment in een van de eigenschappen voorkomt.
+			return titleMatch || statusMatch || assignedToMatch;
 		}
 
 		private void IncidentButton_Click(object sender, RoutedEventArgs e)
@@ -163,6 +133,20 @@ namespace UI.UserControls
 
 			// Stel de Content van svMainContent in om te navigeren naar de CreateTicket pagina
 			svMainContent.Content = createTicketScreen;
+		}
+		private void ViewTicketDetails_Click(object sender, RoutedEventArgs e)
+		{
+			var selectedTicket = (Ticket)((Button)sender).DataContext;
+
+			if (selectedTicket != null)
+			{
+				// Retrieve the logged-in user from ApplicationStore
+				Employee loggedInUser = ApplicationStore.GetInstance().getLoggedInUser();
+
+				// Pass the ticket ID and logged-in user to TicketDetail
+				var ticketDetail = new TicketDetail(selectedTicket._id.ToString(), loggedInUser);
+				ticketDetail.ShowDialog();
+			}
 		}
 	}
 }
