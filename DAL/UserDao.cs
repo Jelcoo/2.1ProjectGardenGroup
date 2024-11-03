@@ -4,6 +4,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -31,7 +32,7 @@ namespace DAL
         public void CreateUser(string name, string email, string phoneNumber, string password, Role role)
         {
             string salt = PasswordTools.GenerateSalt();
-            string hashedPassword = PasswordTools.hashPassword(salt, password);
+            string hashedPassword = PasswordTools.HashPassword(salt, password);
 
             Employee newEmployee = new Employee
             {
@@ -87,6 +88,35 @@ namespace DAL
         {
             Db.GetCollection<Employee>("employees")
                 .DeleteOne(Builders<Employee>.Filter.Eq(e => e.Id, id));
+        }
+
+        public void UpdateEmployeeResetCode(Employee employee)
+        {
+            var updateDefinition = Builders<Employee>.Update
+                .Set(u => u.password_reset_hashed, employee.password_reset_hashed)
+                .Set(u => u.password_reset_salt, employee.password_reset_salt);
+
+            Db.GetCollection<Employee>("employees")
+                .UpdateOne(u => u.Id == employee.Id, updateDefinition);
+        }
+         
+        public void UpdateEmployeeResetPassword(Employee employee, string hashedPassword)
+        {
+            var updateDefinition = Builders<Employee>.Update
+                .Set(u => u.password_hashed, hashedPassword);
+
+            Db.GetCollection<Employee>("employees")
+                .UpdateOne(u => u.Id == employee.Id, updateDefinition);
+        }
+
+        public void UpdateEmployeeClearCode(Employee employee)
+        {
+            var updateDefinition = Builders<Employee>.Update
+                .Set(u => u.password_reset_hashed, null)
+                .Set(u => u.password_reset_salt, null);
+
+            Db.GetCollection<Employee>("employees")
+                .UpdateOne(u => u.Id == employee.Id, updateDefinition);
         }
 
         //public List<Employee> GetEmployeesWithTickets()

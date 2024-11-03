@@ -15,7 +15,7 @@ namespace UI
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            LoginScreen screen = new LoginScreen(svMainContent);
+            LoginScreen screen = new LoginScreen();
             svMainContent.Content = screen;
 
            // UserManagement userManagement = new UserManagement();
