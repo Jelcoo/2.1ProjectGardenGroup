@@ -23,19 +23,17 @@ namespace UI.UserControls
     /// </summary>
     public partial class LoginScreen : UserControl
     {
-        private ScrollViewer svMainContent;
         UserLogic userLogic = new UserLogic();
 
-        public LoginScreen(ScrollViewer svMainContent)
+        public LoginScreen()
         {
             InitializeComponent();
-            this.svMainContent = svMainContent;
         }
-        private void onLoginClick(object sender, RoutedEventArgs e)
+        private void loginButton_Click(object sender, RoutedEventArgs e)
         {
             string email = emailInput.Text;
             string password = passwordInput.Password;
-            Employee userToLogin = userLogic.verifyLogin(email, password);
+            Employee userToLogin = userLogic.VerifyLogin(email, password);
             if (userToLogin == null)
             {
                 errorLabel.Content = "The username or password is not valid";
@@ -44,12 +42,12 @@ namespace UI.UserControls
 
             ApplicationStore.GetInstance().setLoggedInUser(userToLogin);
 
-            Window parentWindow = Window.GetWindow(svMainContent);
-            Label? loggedInAsLabel = parentWindow.FindName("loggedInAsLabel") as Label;
+            MainWindow window = Window.GetWindow(this) as MainWindow;
+            Label? loggedInAsLabel = window.FindName("loggedInAsLabel") as Label;
             loggedInAsLabel.Content = "Welcome " + userToLogin.name + "! You are a " + userToLogin.role.ToString();
-            Button? dashButton = parentWindow.FindName("dashboardButton") as Button;
-            Button? ticketsButton = parentWindow.FindName("ticketsButton") as Button;
-            Button? employeesButton = parentWindow.FindName("employeesButton") as Button;
+            Button? dashButton = window.FindName("dashboardButton") as Button;
+            Button? ticketsButton = window.FindName("ticketsButton") as Button;
+            Button? employeesButton = window.FindName("employeesButton") as Button;
             dashButton.Visibility = Visibility.Visible;
             ticketsButton.Visibility = Visibility.Visible;
             if (userToLogin.role == Role.ServiceDesk)
@@ -57,8 +55,13 @@ namespace UI.UserControls
                 employeesButton.Visibility = Visibility.Visible;
             }
 
-            Dashboard screen = new Dashboard();
-            svMainContent.Content = screen;
+            window.svMainContent.Content = new Dashboard();
+        }
+
+        private void pwResetButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow window = Window.GetWindow(this) as MainWindow;
+            window.svMainContent.Content = new PwResetLanding();
         }
     }
 }

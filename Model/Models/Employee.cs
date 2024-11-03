@@ -14,9 +14,10 @@ namespace Model.Models
     {
         public Role role { get; set; }
 
-        [BsonRepresentation(BsonType.String)]
-
         public string password_hashed { get; set; }
         public string password_salt { get; set; }
+
+        public string password_reset_hashed { get; set; }
+        public string password_reset_salt { get; set; }
     }
 }
