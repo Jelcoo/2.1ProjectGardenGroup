@@ -71,8 +71,12 @@ namespace UI.UserControls
 
             if (selectedTicket != null)
             {
-                var ticketDetail = new TicketDetail(selectedTicket._id.ToString());
-                ticketDetail.ShowDialog(); 
+                // Retrieve the logged-in user from ApplicationStore
+                Employee loggedInUser = ApplicationStore.GetInstance().getLoggedInUser();
+
+                // Pass the ticket ID and logged-in user to TicketDetail
+                var ticketDetail = new TicketDetail(selectedTicket._id.ToString(), loggedInUser);
+                ticketDetail.ShowDialog();
             }
         }
     }

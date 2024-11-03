@@ -13,7 +13,7 @@ namespace Logic
     public class TicketLogic
     {
         TicketDao ticketDao = new TicketDao();
-        private readonly CommentDao commentDao = new CommentDao(); 
+        private readonly CommentLogic commentLogic = new CommentLogic();
 
         public TicketLogic()
         {
@@ -48,24 +48,16 @@ namespace Logic
 
         public void AddCommentToTicket(ObjectId ticketId, Comment comment)
         {
-            comment.ticketId = ticketId;
-
-            commentDao.InsertComment(comment);
-
-            ticketDao.AddCommentIdToTicket(ticketId, comment._id);
+            commentLogic.AddComment(comment);
+            ticketDao.AddCommentIdToTicket(ticketId, comment._id);  
         }
 
-        public List<Comment> GetCommentsForTicket(ObjectId ticketId)
-        {
-            var ticket = ticketDao.GetTicketById(ticketId);
-            return commentDao.GetCommentsByIds(ticket.commentIds);
-        }
 
          //methode om de ticket en bijbehorende comment op te halen
         public (Ticket, List<Comment>) GetTicketWithComments(ObjectId ticketId)
         {
             var ticket = ticketDao.GetTicketById(ticketId);
-            var comments = commentDao.GetCommentsByTicketId(ticketId);
+            var comments = commentLogic.GetCommentsForTicket(ticketId); 
             return (ticket, comments);
         }
     }

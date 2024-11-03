@@ -94,10 +94,10 @@ namespace DAL
         //  var pipeline = Db.GetCollection<Employee>("employees")
         //    .Aggregate()
         //  .Lookup<Employee, Ticket, Employee>(
-        //    "tickets",          // The collection you're joining with
-        //  "Id",               // Local field in employees
-        //"EmployeeId",       // Field in tickets collection
-        //@as: "Tickets"      // The name of the new array field in the result
+        //    "tickets",         
+        //  "Id",               
+        //"EmployeeId",       
+        //@as: "Tickets"      
         // )
         //.ToList();
 

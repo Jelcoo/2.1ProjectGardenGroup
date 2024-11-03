@@ -134,7 +134,6 @@ namespace DAL
 
         public void UpdateEmployeeNameInTickets(string employeeId, string newName)
         {
-            // Update the employee's name in all tickets where they are referenced
             var filter = Builders<Ticket>.Filter.Or(
                 Builders<Ticket>.Filter.Eq("reported_by.Id", employeeId),
                 Builders<Ticket>.Filter.Eq("assigned_to.Id", employeeId),

@@ -10,20 +10,23 @@ namespace UI.UserControls
     public partial class TicketDetail : Window
     {
         private readonly TicketLogic ticketLogic = new TicketLogic();
-        private readonly ObjectId ticketId;  // Use only ObjectId for ticket ID
+        private readonly ObjectId ticketId;  // inplaats van string objectId
+        private readonly Employee loggedInUser; 
+
 
         public Ticket SelectedTicket { get; set; }
         public ObservableCollection<Comment> LinkedComments { get; set; }
 
-        public TicketDetail(string ticketIdString)
+        public TicketDetail(string ticketIdString, Employee loggedInUser)
         {
             InitializeComponent();
+            this.loggedInUser = loggedInUser; // ingelogde gebruiker opslaan
 
-            // Convert string to ObjectId if possible
+
             if (ObjectId.TryParse(ticketIdString, out ObjectId parsedTicketId))
             {
                 ticketId = parsedTicketId;
-                LoadTicketDetails();  // Load details only if ID parsing is successful
+                LoadTicketDetails();
             }
             else
             {
@@ -34,12 +37,12 @@ namespace UI.UserControls
 
         private void LoadTicketDetails()
         {
-            // Load ticket and the linked comments using ObjectId
+            // laad ticket en de gekoppelde comment
             var (ticket, comments) = ticketLogic.GetTicketWithComments(ticketId);
             SelectedTicket = ticket;
             LinkedComments = new ObservableCollection<Comment>(comments);
 
-            DataContext = this;  // Set DataContext to enable binding in the UI
+            DataContext = this;
         }
 
         private void AddCommentButton_Click(object sender, RoutedEventArgs e)
@@ -50,16 +53,16 @@ namespace UI.UserControls
                 return;
             }
 
-            // Create a new comment with ObjectId as ticketId
+            // nieuwe comment aanmaken met ticketid/objectid
             var newComment = new Comment
             {
-                ticketId = ticketId,  // Use ObjectId for ticketId
+                ticketId = ticketId, 
                 message = NewCommentTextBox.Text,
-                commentedBy = new PartialUser { Id = "user-id", name = "User Name" },  // Replace with actual user info
+                commentedBy = new PartialUser { Id = loggedInUser.Id, name = loggedInUser.name },
                 commentedAt = DateTime.UtcNow
             };
 
-            // Add the comment to the ticket
+            // Voeg de opmerking toe aan het ticket
             ticketLogic.AddCommentToTicket(ticketId, newComment);
             LinkedComments.Add(newComment);
             NewCommentTextBox.Clear();

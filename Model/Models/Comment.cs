@@ -11,7 +11,7 @@ namespace Model.Models
     public class Comment
     {
         [BsonId]
-        [BsonRepresentation(BsonType.String)]  // Ensures MongoDB stores _id as a string
+        [BsonRepresentation(BsonType.String)] 
 
         public ObjectId _id { get; set; } 
         public ObjectId ticketId { get; set; }  
