@@ -22,8 +22,9 @@
 				<ComboBoxItem Content="Title"/>
 				<ComboBoxItem Content="Status"/>
 				<ComboBoxItem Content="Assigned to"/>
-				<ComboBoxItem Content="AND (&amp;) OR (|)"/>
-			</ComboBox>
+                <ComboBoxItem Content="Priority"/>
+                <ComboBoxItem Content="AND (&amp;) OR (|)"/>
+            </ComboBox>
 
 			<Border BorderBrush="Black" BorderThickness="1" Grid.Row="1" CornerRadius="4" Background="White" Margin="0,20,0,20" HorizontalAlignment="Left" Width="250">
 				<TextBox x:Name="tbFilterInput" TextWrapping="Wrap" Text="" FontSize="22" BorderThickness="0" Background="{x:Null}" TextChanged="tbFilterInput_TextChanged"/>
@@ -56,5 +57,14 @@
 				<DataGridTextColumn Header="Created at" Binding="{Binding created_at}"/>
 			</DataGrid.Columns>
 		</DataGrid>
-	</Grid>
+        <!-- Overlay voor geen resultaten gevonden -->
+        <Border x:Name="NoResultsOverlay" Visibility="Collapsed" Background="#AAFFFFFF" 
+                HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="10">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock Text="Geen resultaten gevonden" FontSize="20" Foreground="Black" 
+                           HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                <Button Content="Sluiten" Width="100" Height="30" Click="CloseNoResultsOverlay"/>
+            </StackPanel>
+        </Border>
+    </Grid>
 </UserControl>
