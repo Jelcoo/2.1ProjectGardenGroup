@@ -55,7 +55,7 @@ namespace DAL
                 .Aggregate()
                 .Project(employee => new Employee
                 {
-                    Id = employee.Id,
+                    _id = employee._id,
                     name = employee.name,
                     email = employee.email,
                     phone_number = employee.phone_number,
