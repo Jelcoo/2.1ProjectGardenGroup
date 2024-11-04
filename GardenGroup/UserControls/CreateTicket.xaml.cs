@@ -24,9 +24,11 @@ namespace UI.UserControls
     public partial class CreateTicket : UserControl
     {
         private TicketLogic ticketLogic;
-        public CreateTicket()
+		private ScrollViewer svMainContent;
+		public CreateTicket(ScrollViewer svMainContent)
         {
-            ticketLogic = new TicketLogic();
+            this.svMainContent = svMainContent;
+			ticketLogic = new TicketLogic();
             InitializeComponent();
             FillEmployeeDropDown();
             FillRoleDropDown();
@@ -61,7 +63,6 @@ namespace UI.UserControls
             Ticket newTicket = new Ticket();
 
             // Haal de waarden op van de verschillende velden in het formulier
-            newTicket._id = Guid.NewGuid().ToString();
             newTicket.occurred_at = (DateTime)Datepicker.SelectedDate; // Datum uit DatePicker
             newTicket.reported_by = (PartialUser)reportedByDropdown.SelectedItem; // Gebruiker uit ComboBox (
             newTicket.priority = priorityDropDown.SelectedItem.ToString(); // Prioriteit uit ComboBox
@@ -74,5 +75,11 @@ namespace UI.UserControls
 
             MessageBox.Show("Ticket succesvol aangemaakt!", "Bevestiging", MessageBoxButton.OK, MessageBoxImage.Information);
         }
-    }
+
+		private void btnCancel_Click(object sender, RoutedEventArgs e)
+		{
+			TicketOverview ticketOverviewScreen = new TicketOverview(svMainContent);
+			svMainContent.Content = ticketOverviewScreen;
+		}
+	}
 }

@@ -5,7 +5,7 @@ namespace Tools
 {
     public class PasswordTools
     {
-        public static string hashPassword(string salt, string password)
+        public static string HashPassword(string salt, string password)
         {
             string salty = salt + password;
             using (SHA256 sha256Hash = SHA256.Create())
@@ -29,6 +29,17 @@ namespace Tools
                 rng.GetBytes(saltBytes);
             }
             return Convert.ToBase64String(saltBytes);
+        }
+
+        public static string GenerateVerifyCode(int codeLength)
+        {
+            StringBuilder codeBuilder = new StringBuilder();
+            for (int i = 0; i < codeLength; i++)
+            {
+                codeBuilder.Append(GenericTools.GenerateNumber(0, 9));
+            }
+
+            return codeBuilder.ToString();
         }
     }
 }

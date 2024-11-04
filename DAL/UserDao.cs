@@ -4,6 +4,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -31,11 +32,11 @@ namespace DAL
         public void CreateUser(string name, string email, string phoneNumber, string password, Role role)
         {
             string salt = PasswordTools.GenerateSalt();
-            string hashedPassword = PasswordTools.hashPassword(salt, password);
+            string hashedPassword = PasswordTools.HashPassword(salt, password);
 
             Employee newEmployee = new Employee
             {
-                Id = ObjectId.GenerateNewId().ToString(),
+                _id = ObjectId.GenerateNewId().ToString(),
                 name = name,
                 email = email,
                 phone_number = phoneNumber,
@@ -52,7 +53,16 @@ namespace DAL
         {
             List<Employee> employees = Db.GetCollection<Employee>("employees")
                 .Aggregate()
-                .Match(Builders<Employee>.Filter.Empty)
+                .Project(employee => new Employee
+                {
+                    _id = employee._id,
+                    name = employee.name,
+                    email = employee.email,
+                    phone_number = employee.phone_number,
+                    role = employee.role,
+                    password_hashed = employee.password_hashed,
+                    password_salt = employee.password_salt
+                })
                 .ToList();
 
             return employees;
@@ -70,14 +80,43 @@ namespace DAL
                 .Set(e => e.role, role);
 
             Db.GetCollection<Employee>("employees")
-                .UpdateOne(u => u.Id == partialUser.Id, updateDefinition);
+                .UpdateOne(u => u._id == partialUser._id, updateDefinition);
         }
 
         //methode om user te deleten met ID (delete)
         public void DeleteEmployee(string id)
         {
             Db.GetCollection<Employee>("employees")
-                .DeleteOne(Builders<Employee>.Filter.Eq(e => e.Id, id));
+                .DeleteOne(Builders<Employee>.Filter.Eq(e => e._id, id));
+        }
+
+        public void UpdateEmployeeResetCode(Employee employee)
+        {
+            var updateDefinition = Builders<Employee>.Update
+                .Set(u => u.password_reset_hashed, employee.password_reset_hashed)
+                .Set(u => u.password_reset_salt, employee.password_reset_salt);
+
+            Db.GetCollection<Employee>("employees")
+                .UpdateOne(u => u._id == employee._id, updateDefinition);
+        }
+         
+        public void UpdateEmployeeResetPassword(Employee employee, string hashedPassword)
+        {
+            var updateDefinition = Builders<Employee>.Update
+                .Set(u => u.password_hashed, hashedPassword);
+
+            Db.GetCollection<Employee>("employees")
+                .UpdateOne(u => u._id == employee._id, updateDefinition);
+        }
+
+        public void UpdateEmployeeClearCode(Employee employee)
+        {
+            var updateDefinition = Builders<Employee>.Update
+                .Set(u => u.password_reset_hashed, null)
+                .Set(u => u.password_reset_salt, null);
+
+            Db.GetCollection<Employee>("employees")
+                .UpdateOne(u => u._id == employee._id, updateDefinition);
         }
 
         //public List<Employee> GetEmployeesWithTickets()
@@ -85,10 +124,10 @@ namespace DAL
         //  var pipeline = Db.GetCollection<Employee>("employees")
         //    .Aggregate()
         //  .Lookup<Employee, Ticket, Employee>(
-        //    "tickets",          // The collection you're joining with
-        //  "Id",               // Local field in employees
-        //"EmployeeId",       // Field in tickets collection
-        //@as: "Tickets"      // The name of the new array field in the result
+        //    "tickets",         
+        //  "Id",               
+        //"EmployeeId",       
+        //@as: "Tickets"      
         // )
         //.ToList();
 
