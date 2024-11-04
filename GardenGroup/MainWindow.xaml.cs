@@ -17,6 +17,9 @@ namespace UI
         {
             LoginScreen screen = new LoginScreen();
             svMainContent.Content = screen;
+
+           // UserManagement userManagement = new UserManagement();
+           // svMainContent.Content = userManagement;
         }
 
         private void dashboardButton_Click(object sender, RoutedEventArgs e)
@@ -27,7 +30,7 @@ namespace UI
 
         private void ticketsButton_Click(object sender, RoutedEventArgs e)
         {
-            TicketOverview screen = new TicketOverview();
+            TicketOverview screen = new TicketOverview(svMainContent);
             svMainContent.Content = screen;
         }
 

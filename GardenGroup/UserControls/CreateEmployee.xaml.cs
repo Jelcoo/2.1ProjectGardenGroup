@@ -24,13 +24,17 @@ namespace UI.UserControls
     public partial class CreateEmployee : UserControl
     {
         private readonly MainWindow parentWindow;
-        private readonly UserLogic userLogic;
+        private UserLogic userLogic = new UserLogic();
+
 
         public CreateEmployee()
         {
             InitializeComponent();
 
             userLogic = new UserLogic();
+            this.parentWindow = Application.Current.MainWindow as MainWindow
+                         ?? throw new ArgumentNullException(nameof(parentWindow));
+            this.userLogic = new UserLogic();
 
             CboxTypeOfUser.ItemsSource = Enum.GetValues(typeof(Role));
 

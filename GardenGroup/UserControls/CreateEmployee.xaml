@@ -15,7 +15,7 @@
         <TextBox x:Name="txtBoxEmail" HorizontalAlignment="Left" Margin="123,63,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <TextBox x:Name="txtBoxPhoneNumber" HorizontalAlignment="Left" Margin="123,89,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <ComboBox x:Name="CboxTypeOfUser" HorizontalAlignment="Left" Margin="123,115,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="CboxTypeOfUser_SelectionChanged"/>
-        <Button x:Name="btnCreateUser" Content="Create" HorizontalAlignment="Left" Margin="196,195,0,0" VerticalAlignment="Top" Width="47" FontWeight="Bold" Background="#FF769FD9" Click="btnCreateUser_Click"/>
+        <Button x:Name="btnCreateUser" Content="Create" HorizontalAlignment="Left" Margin="196,195,0,0" VerticalAlignment="Top" Width="47" FontWeight="Bold" Background="#FF62A3FF" Click="btnCreateUser_Click"/>
         <Button x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" Margin="123,195,0,0" VerticalAlignment="Top" FontWeight="Bold" Width="46" Click="btnCancel_Click"/>
         <Label x:Name="lblPassword" Content="Password" HorizontalAlignment="Left" Margin="25,138,0,0" VerticalAlignment="Top"/>
         <PasswordBox x:Name="pwdBoxPassword" HorizontalAlignment="Left" Margin="123,142,0,0" VerticalAlignment="Top" Width="120"/>
