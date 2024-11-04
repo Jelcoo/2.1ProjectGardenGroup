@@ -50,41 +50,54 @@ namespace UI.UserControls
 
 		private void tbFilterInput_TextChanged(object sender, TextChangedEventArgs e)
 		{
-			// Haalt de huidige weergave van de DataGrid op als een CollectionView.
-			CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(TicketList.ItemsSource);
-
-			// Zet de invoer in kleine letters voor eenvoudiger vergelijken.
-			string filterText = tbFilterInput.Text.ToLower();
-
-			// Stel de filterfunctie voor de CollectionView in.
-			view.Filter = item =>
+			if (filterType.Text == "Full search")
 			{
-				if (item is Ticket ticket)
+				if (tbFilterInput.Text.Length >= 3)
 				{
-					// Definieer bools voor match per eigenschap.
-					bool titleMatch = ticket.title.ToLower().Contains(filterText);
-					bool statusMatch = ticket.status.ToString().ToLower().Contains(filterText);
-					bool assignedToMatch = ticket.assigned_to.name.ToLower().Contains(filterText);
-
-					// Toepassen van de geselecteerde filterlogica.
-					switch (filterType.Text)
+					List<Ticket> tickets = ticketLogic.SearchTickets(tbFilterInput.Text);
+					Tickets.Clear();
+					foreach (Ticket tkt in tickets)
 					{
-						case "Title":
-							return titleMatch;
-						case "Status":
-							return statusMatch;
-						case "Assigned to":
-							return assignedToMatch;
-						case "AND (&) OR (|)":
-							return ApplyComplexFilter(ticket, filterText);
-						default:
-							return false;
+						Tickets.Add(tkt);
 					}
 				}
-				return false;
-			};
+			}
 
-			view.Refresh(); // Ververs de weergave om de filterresultaten toe te passen.
+			//// Haalt de huidige weergave van de DataGrid op als een CollectionView.
+			//CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(TicketList.ItemsSource);
+
+			//// Zet de invoer in kleine letters voor eenvoudiger vergelijken.
+			//string filterText = tbFilterInput.Text.ToLower();
+
+			//// Stel de filterfunctie voor de CollectionView in.
+			//view.Filter = item =>
+			//{
+			//	if (item is Ticket ticket)
+			//	{
+			//		// Definieer bools voor match per eigenschap.
+			//		bool titleMatch = ticket.title.ToLower().Contains(filterText);
+			//		bool statusMatch = ticket.status.ToString().ToLower().Contains(filterText);
+			//		bool assignedToMatch = ticket.assigned_to.name.ToLower().Contains(filterText);
+
+			//		// Toepassen van de geselecteerde filterlogica.
+			//		switch (filterType.Text)
+			//		{
+			//			case "Title":
+			//				return titleMatch;
+			//			case "Status":
+			//				return statusMatch;
+			//			case "Assigned to":
+			//				return assignedToMatch;
+			//			case "AND (&) OR (|)":
+			//				return ApplyComplexFilter(ticket, filterText);
+			//			default:
+			//				return false;
+			//		}
+			//	}
+			//	return false;
+			//};
+
+			//view.Refresh(); // Ververs de weergave om de filterresultaten toe te passen.
 		}
 
 		private bool ApplyComplexFilter(Ticket ticket, string filterText)
