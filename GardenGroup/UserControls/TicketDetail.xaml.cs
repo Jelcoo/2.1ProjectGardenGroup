@@ -58,7 +58,7 @@ namespace UI.UserControls
             {
                 ticketId = ticketId, 
                 message = NewCommentTextBox.Text,
-                commentedBy = new PartialUser { Id = loggedInUser.Id, name = loggedInUser.name },
+                commentedBy = new PartialUser { _id = loggedInUser._id, name = loggedInUser.name },
                 commentedAt = DateTime.UtcNow
             };
 

@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="App.config.example">
+    <None Update="App.config">
       <Generator>MSBuild:Compile</Generator>
     </None>
   </ItemGroup>

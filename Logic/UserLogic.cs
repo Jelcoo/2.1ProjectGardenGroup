@@ -55,7 +55,7 @@ namespace Logic
 
         private void UpdateEmployeeNameInTickets(PartialUser partialUser)
         {
-            ticketDao.UpdateEmployeeNameInTickets(partialUser.Id, partialUser.name);
+            ticketDao.UpdateEmployeeNameInTickets(partialUser._id, partialUser.name);
         }
 
         // verwijder user door ID

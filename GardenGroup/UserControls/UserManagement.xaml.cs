@@ -62,7 +62,7 @@ namespace UI.UserControls
                 MessageBoxResult result = MessageBox.Show($"Are you sure you want to delete {selectedUser.name}?", "Confirm Delete", MessageBoxButton.YesNo);
                 if (result == MessageBoxResult.Yes)
                 {
-                    userLogic.DeleteUser(selectedUser.Id);
+                    userLogic.DeleteUser(selectedUser._id);
                     LoadUsers();
                 }
             }

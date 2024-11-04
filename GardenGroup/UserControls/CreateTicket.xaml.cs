@@ -24,9 +24,11 @@ namespace UI.UserControls
     public partial class CreateTicket : UserControl
     {
         private TicketLogic ticketLogic;
-        public CreateTicket()
+		private ScrollViewer svMainContent;
+		public CreateTicket(ScrollViewer svMainContent)
         {
-            ticketLogic = new TicketLogic();
+            this.svMainContent = svMainContent;
+			ticketLogic = new TicketLogic();
             InitializeComponent();
             FillEmployeeDropDown();
             FillRoleDropDown();
@@ -73,5 +75,11 @@ namespace UI.UserControls
 
             MessageBox.Show("Ticket succesvol aangemaakt!", "Bevestiging", MessageBoxButton.OK, MessageBoxImage.Information);
         }
-    }
+
+		private void btnCancel_Click(object sender, RoutedEventArgs e)
+		{
+			TicketOverview ticketOverviewScreen = new TicketOverview(svMainContent);
+			svMainContent.Content = ticketOverviewScreen;
+		}
+	}
 }

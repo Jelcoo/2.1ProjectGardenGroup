@@ -23,12 +23,14 @@ namespace UI.UserControls
 	/// </summary>
 	public partial class TicketOverview : UserControl
 	{
+		private ScrollViewer svMainContent;
 		public ObservableCollection<Ticket> Tickets { get; set; }
-		private TicketLogic ticketLogic;
+		TicketLogic ticketLogic;
 
-		public TicketOverview()
+		public TicketOverview(ScrollViewer svMainContent)
 		{
 			InitializeComponent();
+			this.svMainContent = svMainContent;
 			Tickets = new ObservableCollection<Ticket>();
 			this.DataContext = this;
 		}
@@ -48,27 +50,90 @@ namespace UI.UserControls
 
 		private void tbFilterInput_TextChanged(object sender, TextChangedEventArgs e)
 		{
+			// Haalt de huidige weergave van de DataGrid op als een CollectionView.
 			CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(TicketList.ItemsSource);
-			view.Filter = item => ((Ticket)item).title.ToLower().Contains(tbFilterInput.Text.ToLower());
 
-			if (tbFilterInput.Text.Length >= 3)
+			// Zet de invoer in kleine letters voor eenvoudiger vergelijken.
+			string filterText = tbFilterInput.Text.ToLower();
+
+			// Stel de filterfunctie voor de CollectionView in.
+			view.Filter = item =>
 			{
-				List<Ticket> tickets = new List<Ticket>();
-
-				if (filterType.Text == "Title")
+				if (item is Ticket ticket)
 				{
-					tickets = ticketLogic.SearchTickets(tbFilterInput.Text);
-				}
+					// Definieer bools voor match per eigenschap.
+					bool titleMatch = ticket.title.ToLower().Contains(filterText);
+					bool statusMatch = ticket.status.ToString().ToLower().Contains(filterText);
+					bool assignedToMatch = ticket.assigned_to.name.ToLower().Contains(filterText);
 
-				Tickets.Clear();
-
-				foreach (var ticket in tickets)
-				{
-					Tickets.Add(ticket);
+					// Toepassen van de geselecteerde filterlogica.
+					switch (filterType.Text)
+					{
+						case "Title":
+							return titleMatch;
+						case "Status":
+							return statusMatch;
+						case "Assigned to":
+							return assignedToMatch;
+						case "AND (&) OR (|)":
+							return ApplyComplexFilter(ticket, filterText);
+						default:
+							return false;
+					}
 				}
-			}
+				return false;
+			};
+
+			view.Refresh(); // Ververs de weergave om de filterresultaten toe te passen.
 		}
 
+		private bool ApplyComplexFilter(Ticket ticket, string filterText)
+		{
+			// Splitst de filtertekst op "and" en "&" om AND-segmenten te krijgen.
+			string[] andSegments = filterText.Split(new string[] { " and ", "&" }, System.StringSplitOptions.None);
+			bool andResult = andSegments.All(segment => SegmentMatches(ticket, segment.Trim()));
+
+			// Controleert of er "or" of "|" in de filtertekst aanwezig is voor OR-segmenten.
+			if (filterText.Contains(" or ") || filterText.Contains("|"))
+			{
+				string[] orSegments = filterText.Split(new string[] { " or ", "|" }, System.StringSplitOptions.None);
+
+				foreach (string segment in orSegments)
+				{
+					if (SegmentMatches(ticket, segment.Trim()))
+					{
+						return true; // Retourneer true zodra een OR-segment overeenkomt.
+					}
+				}
+				return false; // Retourneer false als geen enkel OR-segment overeenkomt.
+			}
+
+			return andResult; // Retourneer het resultaat van de AND-logica als er geen OR-segmenten zijn.
+		}
+
+		private bool SegmentMatches(Ticket ticket, string segment)
+		{
+			bool titleMatch = ticket.title.ToLower().Contains(segment);
+			bool statusMatch = ticket.status.ToString().ToLower().Contains(segment);
+			bool assignedToMatch = ticket.assigned_to.name.ToLower().Contains(segment);
+
+			// Retourneer true als het segment in een van de eigenschappen voorkomt.
+			return titleMatch || statusMatch || assignedToMatch;
+		}
+
+		private void IncidentButton_Click(object sender, RoutedEventArgs e)
+		{
+			if (svMainContent == null)
+			{
+				MessageBox.Show("ScrollViewer is niet ingesteld", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				return;
+			}
+			// Maak een nieuwe instantie van de CreateTicket UserControl
+			CreateTicket createTicketScreen = new CreateTicket(svMainContent);
+
+			// Stel de Content van svMainContent in om te navigeren naar de CreateTicket pagina
+			svMainContent.Content = createTicketScreen;
+		}
 		private void ViewTicketDetails_Click(object sender, RoutedEventArgs e)
 		{
 			var selectedTicket = (Ticket)((Button)sender).DataContext;
