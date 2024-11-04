@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace UI.UserControls
 {
@@ -25,7 +26,9 @@ namespace UI.UserControls
 	{
 		private ScrollViewer svMainContent;
 		public ObservableCollection<Ticket> Tickets { get; set; }
-		TicketLogic ticketLogic;
+		private TicketLogic ticketLogic;
+		private DispatcherTimer _timer;
+		private const int _delay = 500;
 
 		public TicketOverview(ScrollViewer svMainContent)
 		{
@@ -33,6 +36,12 @@ namespace UI.UserControls
 			this.svMainContent = svMainContent;
 			Tickets = new ObservableCollection<Ticket>();
 			this.DataContext = this;
+
+			_timer = new DispatcherTimer
+			{
+				Interval = TimeSpan.FromMilliseconds(_delay)
+			};
+			_timer.Tick += Timer_Tick; // Subscribe to the timer's Tick event
 		}
 
 		private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -48,56 +57,75 @@ namespace UI.UserControls
 			//ticketLogic.ChangeTicketStatus("b228c211-6b6e-4807-a41f-a515cc769be4", Model.Enums.Status_Enum.Closed);
 		}
 
+		private void Timer_Tick(object sender, EventArgs e)
+		{
+			// Stop the timer to avoid repeated ticks
+			_timer.Stop();
+
+			// Execute your filtering logic here
+			string searchQuery = tbFilterInput.Text;
+			ApplyFilter(searchQuery); // Your method to filter the data
+		}
+
 		private void tbFilterInput_TextChanged(object sender, TextChangedEventArgs e)
 		{
+			// Restart the timer on text change
+			_timer.Stop();
+			_timer.Start();
+		}
+
+		private void ApplyFilter(string searchQuery)
+		{
+
 			if (filterType.Text == "Full search")
 			{
-				if (tbFilterInput.Text.Length >= 3)
+				if (searchQuery.Length >= 3)
 				{
-					List<Ticket> tickets = ticketLogic.SearchTickets(tbFilterInput.Text);
+					List<Ticket> tickets = ticketLogic.SearchTickets(searchQuery);
 					Tickets.Clear();
 					foreach (Ticket tkt in tickets)
 					{
 						Tickets.Add(tkt);
 					}
 				}
+				return;
 			}
 
-			//// Haalt de huidige weergave van de DataGrid op als een CollectionView.
-			//CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(TicketList.ItemsSource);
+			// Haalt de huidige weergave van de DataGrid op als een CollectionView.
+			CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(TicketList.ItemsSource);
 
-			//// Zet de invoer in kleine letters voor eenvoudiger vergelijken.
-			//string filterText = tbFilterInput.Text.ToLower();
+			// Zet de invoer in kleine letters voor eenvoudiger vergelijken.
+			string filterText = tbFilterInput.Text.ToLower();
 
-			//// Stel de filterfunctie voor de CollectionView in.
-			//view.Filter = item =>
-			//{
-			//	if (item is Ticket ticket)
-			//	{
-			//		// Definieer bools voor match per eigenschap.
-			//		bool titleMatch = ticket.title.ToLower().Contains(filterText);
-			//		bool statusMatch = ticket.status.ToString().ToLower().Contains(filterText);
-			//		bool assignedToMatch = ticket.assigned_to.name.ToLower().Contains(filterText);
+			// Stel de filterfunctie voor de CollectionView in.
+			view.Filter = item =>
+			{
+				if (item is Ticket ticket)
+				{
+					// Definieer bools voor match per eigenschap.
+					bool titleMatch = ticket.title.ToLower().Contains(filterText);
+					bool statusMatch = ticket.status.ToString().ToLower().Contains(filterText);
+					bool assignedToMatch = ticket.assigned_to.name.ToLower().Contains(filterText);
 
-			//		// Toepassen van de geselecteerde filterlogica.
-			//		switch (filterType.Text)
-			//		{
-			//			case "Title":
-			//				return titleMatch;
-			//			case "Status":
-			//				return statusMatch;
-			//			case "Assigned to":
-			//				return assignedToMatch;
-			//			case "AND (&) OR (|)":
-			//				return ApplyComplexFilter(ticket, filterText);
-			//			default:
-			//				return false;
-			//		}
-			//	}
-			//	return false;
-			//};
+					// Toepassen van de geselecteerde filterlogica.
+					switch (filterType.Text)
+					{
+						case "Title":
+							return titleMatch;
+						case "Status":
+							return statusMatch;
+						case "Assigned to":
+							return assignedToMatch;
+						case "AND (&) OR (|)":
+							return ApplyComplexFilter(ticket, filterText);
+						default:
+							return false;
+					}
+				}
+				return false;
+			};
 
-			//view.Refresh(); // Ververs de weergave om de filterresultaten toe te passen.
+			view.Refresh(); // Ververs de weergave om de filterresultaten toe te passen.
 		}
 
 		private bool ApplyComplexFilter(Ticket ticket, string filterText)
@@ -147,6 +175,7 @@ namespace UI.UserControls
 			// Stel de Content van svMainContent in om te navigeren naar de CreateTicket pagina
 			svMainContent.Content = createTicketScreen;
 		}
+
 		private void ViewTicketDetails_Click(object sender, RoutedEventArgs e)
 		{
 			var selectedTicket = (Ticket)((Button)sender).DataContext;

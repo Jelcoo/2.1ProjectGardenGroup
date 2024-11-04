@@ -76,48 +76,51 @@ namespace DAL
 			FilterDefinitionBuilder<Ticket> builder = Builders<Ticket>.Filter;
 			FilterDefinition<Ticket> filter = builder.Empty;
 
-			if (searchQuery.Contains(" AND "))
+			if (searchQuery.Contains(" AND ") || searchQuery.Contains(" & "))
 			{
-				string[] terms = searchQuery.Split(new[] { " AND ", " & " }, StringSplitOptions.RemoveEmptyEntries);
-				filter = builder.And(
-					terms.Select(term => builder.Regex(x => x.title, new BsonRegularExpression(term.Trim(), "i")))
-				.ToList());
+				filter = CreateAndFilter(searchQuery, builder);
 			}
 			else if (searchQuery.Contains(" OR ") || searchQuery.Contains(" | "))
 			{
-				string[] terms = searchQuery.Split(new[] { " OR ", " | " }, StringSplitOptions.RemoveEmptyEntries);
-				if (terms.Length > 1)
-					filter = builder.Or(
-						terms.Select(term => builder.Regex(x => x.title, new BsonRegularExpression(term.Trim(), "i")))
-					.ToList());
+				filter = CreateOrFilter(searchQuery, builder);
 			}
 			else
 			{
-				filter = builder.Text(searchQuery.Trim());
+				filter = CreateAndFilter(searchQuery, builder);
 			}
 
 			return Db.GetCollection<Ticket>("tickets")
-					.Find(filter)
-					.Sort(Builders<Ticket>.Sort.Descending(ticket => ticket.created_at))
-					.ToList();
+				.Find(filter)
+				.Sort(Builders<Ticket>.Sort.Descending(ticket => ticket.created_at))
+				.ToList();
+		}
 
-			//if (searchQuery.Contains(" -"))
-			//{
-			//	string[] strings = searchQuery.Split(new[] { " -" }, StringSplitOptions.RemoveEmptyEntries);
-			//	filter = Builders<Ticket>.Filter.Not(
-			//		Builders<Ticket>.Filter.Text(strings[1])
-			//		);
-			//	//MakeExclusionFilter(searchQuery, filters);
-			//}
+		private static FilterDefinition<Ticket> CreateOrFilter(string searchQuery, FilterDefinitionBuilder<Ticket> builder)
+		{
+			// split the search where "OR" or "|" is found
+			string[] terms = searchQuery.Split(new[] { " OR ", " | " }, StringSplitOptions.RemoveEmptyEntries);
 
-			//var transformedQuery = searchQuery.Replace("OR", "|");
+			//search for one of the terms in the title or description
+			return builder.Or(terms.Select(term =>
+				builder.Or(
+					builder.Regex(x => x.title, new BsonRegularExpression(term.Trim(), "i")),
+					builder.Regex(x => x.description, new BsonRegularExpression(term.Trim(), "i"))
+				)
+			));
+		}
 
-			//var tickets = Db.GetCollection<Ticket>("tickets")
-			////.Aggregate()
-			////.Match(filter)
-			//.Find(filter)
-			//.Sort(Builders<Ticket>.Sort.Descending(ticket => ticket.created_at))
-			//.ToList();
+		private static FilterDefinition<Ticket> CreateAndFilter(string searchQuery, FilterDefinitionBuilder<Ticket> builder)
+		{
+			// split the search where "AND" or "&" is found
+			string[] terms = searchQuery.Split(new[] { " AND ", " & " }, StringSplitOptions.RemoveEmptyEntries);
+
+			//search for all term in the title or description
+			return builder.And(terms.Select(term =>
+				builder.Or(
+					builder.Regex(x => x.title, new BsonRegularExpression(term.Trim(), "i")),
+					builder.Regex(x => x.description, new BsonRegularExpression(term.Trim(), "i"))
+				)
+			));
 		}
 
 		public void ChangeTicketStatus(ObjectId ticketId, Status_Enum status)

@@ -21,7 +21,7 @@
 				<ComboBoxItem Content="Title"/>
 				<ComboBoxItem Content="Status"/>
 				<ComboBoxItem Content="Assigned to"/>
-                <ComboBoxItem Content="Priority"/>
+				<ComboBoxItem Content="Priority"/>
 				<ComboBoxItem Content="AND (&amp;) OR (|)"/>
 				<ComboBoxItem Content="Full search"/>
 			</ComboBox>
@@ -37,12 +37,11 @@
 
 					<ToolTip ToolTipService.InitialShowDelay="0" ToolTipService.ShowDuration="10000">
 						<StackPanel>
-							<TextBlock Text="Search Tips:" FontWeight="Bold" Margin="0,0,0,5" />
-							<TextBlock Text="• Use 'AND' to find results that include all terms." TextWrapping="Wrap" Margin="0,2,0,0" />
-							<TextBlock Text="• Use 'OR' to find results that include any of the terms." TextWrapping="Wrap" Margin="0,2,0,0" />
-							<TextBlock Text="• Use &quot;phrase&quot; for an exact phrase search." TextWrapping="Wrap" Margin="0,2,0,0" />
+							<TextBlock Text="Search Tips for using the 'Full search':" FontWeight="Bold" Margin="0,0,0,5" />
+							<TextBlock Text="• Full search will search the database and not just the current loaded tickets" TextWrapping="Wrap" Margin="0,2,0,0" />
+							<TextBlock Text="• Use 'AND' or '&amp;' to find results that include all terms." TextWrapping="Wrap" Margin="0,2,0,0" />
+							<TextBlock Text="• Use 'OR' or '|' to find results that include any of the terms." TextWrapping="Wrap" Margin="0,2,0,0" />
 							<TextBlock Text="• Use '-' to exclude terms (e.g., 'login -error')." TextWrapping="Wrap" Margin="0,2,0,0" />
-							<TextBlock Text="• Use '|' to combine terms in an OR operation." TextWrapping="Wrap" Margin="0,2,0,0" />
 						</StackPanel>
 					</ToolTip>
 				</Border.ToolTip>
@@ -55,22 +54,22 @@
 			<Button x:Name="IncidentButton" Content="CREATE INCIDENT" FontSize="14" Padding="15,1,15,1" BorderThickness="0" Background="{x:Null}" Foreground="White" Click="IncidentButton_Click"/>
 		</Border>
 
-        <DataGrid x:Name="TicketList" ItemsSource="{Binding Tickets}" Grid.Row="2" MinHeight="200" AutoGenerateColumns="False" CanUserAddRows="False">
-            <!--<DataGrid.ItemContainerStyle>
+		<DataGrid x:Name="TicketList" ItemsSource="{Binding Tickets}" Grid.Row="2" MinHeight="200" AutoGenerateColumns="False" CanUserAddRows="False">
+			<!--<DataGrid.ItemContainerStyle>
 				<Style TargetType="{x:Type ListViewItem}">
 					-->
-            <!-- Setters, Triggers, etc. -->
-            <!--
+			<!-- Setters, Triggers, etc. -->
+			<!--
 				</Style>
 			</DataGrid.ItemContainerStyle>-->
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Title" Binding="{Binding title}"/>
-                <DataGridTextColumn Header="Status" Binding="{Binding status}"/>
-                <DataGridTextColumn Header="Priority" Binding="{Binding priority}"/>
-                <!-- <DataGridTextColumn Header="Reported by" Binding="{Binding reported_by.name}"/> -->
-                <DataGridTextColumn Header="Assigned to" Binding="{Binding assigned_to.name}"/>
-                <!-- <DataGridTextColumn Header="Occurred at" Binding="{Binding occurred_at}"/> -->
-                <DataGridTextColumn Header="Created at" Binding="{Binding created_at}"/>
+			<DataGrid.Columns>
+				<DataGridTextColumn Header="Title" Binding="{Binding title}"/>
+				<DataGridTextColumn Header="Status" Binding="{Binding status}"/>
+				<DataGridTextColumn Header="Priority" Binding="{Binding priority}"/>
+				<!-- <DataGridTextColumn Header="Reported by" Binding="{Binding reported_by.name}"/> -->
+				<DataGridTextColumn Header="Assigned to" Binding="{Binding assigned_to.name}"/>
+				<!-- <DataGridTextColumn Header="Occurred at" Binding="{Binding occurred_at}"/> -->
+				<DataGridTextColumn Header="Created at" Binding="{Binding created_at}"/>
 
 				<DataGridTemplateColumn Header="Actions">
 					<DataGridTemplateColumn.CellTemplate>
