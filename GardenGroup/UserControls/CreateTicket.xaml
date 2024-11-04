@@ -19,10 +19,8 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Label x:Name="lblDateReported" Content="Date/Time reported:" HorizontalAlignment="Left" VerticalAlignment="Center" Width="119" Grid.Row="1" Grid.Column="0"/>
+        <Label x:Name="lblDateOccurred" Content="Date/Time occurred:" HorizontalAlignment="Left" VerticalAlignment="Center" Width="119" Grid.Row="1" Grid.Column="0"/>
         <DatePicker x:Name="Datepicker" HorizontalAlignment="Left" VerticalAlignment="Center" Width="230" Grid.Row="1" Grid.Column="1" Margin="47,0,0,0"/>
-        <Label x:Name="lblReportedUser" Content="Reported by user:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0"/>
-        <ComboBox x:Name="reportedByDropdown" HorizontalAlignment="Left" VerticalAlignment="Center" Width="230" Grid.Row="2" Grid.Column="1" Margin="47,0,0,0"/>
         <Label x:Name="lblRole" Content="Role:" HorizontalAlignment="Left" Margin="1,0,0,0" Grid.Row="3" VerticalAlignment="Center"/>
         <ComboBox x:Name="roleDropDown" Grid.Column="1" HorizontalAlignment="Left" Margin="47,18,0,0" Grid.Row="3" VerticalAlignment="Top" Width="230"/>
         <Label x:Name="lblPriority" Content="Priority:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4" Grid.Column="0"/>
