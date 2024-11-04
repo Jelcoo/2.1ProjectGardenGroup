@@ -30,7 +30,7 @@ namespace DAL
                 .Aggregate()
                 .Project(e => new PartialUser
                 {
-                    Id = e.Id,
+                    _id = e._id,
                     name = e.name,
                     email = e.email,
                     phone_number = e.phone_number

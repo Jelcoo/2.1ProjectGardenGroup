@@ -48,7 +48,7 @@ namespace UI.UserControls
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             PartialUser newPartialUser = new PartialUser();
-            newPartialUser.Id = selectedUser.Id;
+            newPartialUser._id = selectedUser._id;
             newPartialUser.name = txtBoxEditName.Text;
             newPartialUser.email = txtBoxEditEmail.Text;
             newPartialUser.phone_number = txtBoxEditPhonenumber.Text;

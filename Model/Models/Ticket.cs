@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,11 +10,15 @@ namespace Model.Models
 {
     public class Ticket
     {
+        [BsonRepresentation(BsonType.ObjectId)]
         public string _id;
         public string title;
         public string description;
         public string status;
         public string priority;
+
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string[] commentIds;
         public Comment[] comments;
         public PartialUser reported_by;
         public PartialUser assigned_to;

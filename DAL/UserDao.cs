@@ -36,7 +36,7 @@ namespace DAL
 
             Employee newEmployee = new Employee
             {
-                Id = ObjectId.GenerateNewId().ToString(),
+                _id = ObjectId.GenerateNewId().ToString(),
                 name = name,
                 email = email,
                 phone_number = phoneNumber,
@@ -71,14 +71,14 @@ namespace DAL
                 .Set(e => e.role, role);
 
             Db.GetCollection<Employee>("employees")
-                .UpdateOne(u => u.Id == partialUser.Id, updateDefinition);
+                .UpdateOne(u => u._id == partialUser._id, updateDefinition);
         }
 
         //methode om user te deleten met ID (delete)
         public void DeleteEmployee(string id)
         {
             Db.GetCollection<Employee>("employees")
-                .DeleteOne(Builders<Employee>.Filter.Eq(e => e.Id, id));
+                .DeleteOne(Builders<Employee>.Filter.Eq(e => e._id, id));
         }
 
         public void UpdateEmployeeResetCode(Employee employee)
@@ -88,7 +88,7 @@ namespace DAL
                 .Set(u => u.password_reset_salt, employee.password_reset_salt);
 
             Db.GetCollection<Employee>("employees")
-                .UpdateOne(u => u.Id == employee.Id, updateDefinition);
+                .UpdateOne(u => u._id == employee._id, updateDefinition);
         }
          
         public void UpdateEmployeeResetPassword(Employee employee, string hashedPassword)
@@ -97,7 +97,7 @@ namespace DAL
                 .Set(u => u.password_hashed, hashedPassword);
 
             Db.GetCollection<Employee>("employees")
-                .UpdateOne(u => u.Id == employee.Id, updateDefinition);
+                .UpdateOne(u => u._id == employee._id, updateDefinition);
         }
 
         public void UpdateEmployeeClearCode(Employee employee)
@@ -107,7 +107,7 @@ namespace DAL
                 .Set(u => u.password_reset_salt, null);
 
             Db.GetCollection<Employee>("employees")
-                .UpdateOne(u => u.Id == employee.Id, updateDefinition);
+                .UpdateOne(u => u._id == employee._id, updateDefinition);
         }
 
         //public List<Employee> GetEmployeesWithTickets()
