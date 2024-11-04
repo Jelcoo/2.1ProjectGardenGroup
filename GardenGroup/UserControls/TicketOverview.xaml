@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:UI.UserControls"
              mc:Ignorable="d" Loaded="UserControl_Loaded">
 
-	<Grid Background="White" MinWidth="550" Width="625">
+	<Grid Background="White" MinWidth="650">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="75"/>
 			<RowDefinition Height="75"/>

@@ -92,6 +92,7 @@ namespace DAL
 			return Db.GetCollection<Ticket>("tickets")
 				.Find(filter)
 				.Sort(Builders<Ticket>.Sort.Descending(ticket => ticket.created_at))
+				.Limit(25)
 				.ToList();
 		}
 

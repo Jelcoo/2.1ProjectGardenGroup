@@ -4,17 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 
 namespace UI.UserControls
@@ -27,6 +19,7 @@ namespace UI.UserControls
 		private ScrollViewer svMainContent;
 		public ObservableCollection<Ticket> Tickets { get; set; }
 		private TicketLogic ticketLogic;
+
 		private DispatcherTimer _timer;
 		private const int _delay = 500;
 
@@ -37,6 +30,8 @@ namespace UI.UserControls
 			Tickets = new ObservableCollection<Ticket>();
 			this.DataContext = this;
 
+			// Create a time to act as a delay for the filtering logic.
+			// This is ment to prevent calling the database on eacht character change while the user is still typing.
 			_timer = new DispatcherTimer
 			{
 				Interval = TimeSpan.FromMilliseconds(_delay)
@@ -59,7 +54,7 @@ namespace UI.UserControls
 
 		private void Timer_Tick(object sender, EventArgs e)
 		{
-			// Stop the timer to avoid repeated ticks
+			// Stop the timer
 			_timer.Stop();
 
 			// Execute your filtering logic here
@@ -76,18 +71,10 @@ namespace UI.UserControls
 
 		private void ApplyFilter(string searchQuery)
 		{
-
+			//check if user selected the "Full search" filter
 			if (filterType.Text == "Full search")
 			{
-				if (searchQuery.Length >= 3)
-				{
-					List<Ticket> tickets = ticketLogic.SearchTickets(searchQuery);
-					Tickets.Clear();
-					foreach (Ticket tkt in tickets)
-					{
-						Tickets.Add(tkt);
-					}
-				}
+				SearchInDatabase(searchQuery);
 				return;
 			}
 
@@ -126,6 +113,20 @@ namespace UI.UserControls
 			};
 
 			view.Refresh(); // Ververs de weergave om de filterresultaten toe te passen.
+		}
+
+		private void SearchInDatabase(string searchQuery)
+		{
+			// Do not search if the search query is less than 3 characters
+			if (searchQuery.Length >= 3)
+			{
+				List<Ticket> tickets = ticketLogic.SearchTickets(searchQuery);
+				Tickets.Clear();
+				foreach (Ticket tkt in tickets)
+				{
+					Tickets.Add(tkt);
+				}
+			}
 		}
 
 		private bool ApplyComplexFilter(Ticket ticket, string filterText)
