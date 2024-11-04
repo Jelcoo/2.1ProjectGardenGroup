@@ -1,4 +1,5 @@
-﻿using Logic;
+﻿using DAL;
+using Logic;
 using Model.Enums;
 using Model.Models;
 using System;
@@ -30,18 +31,10 @@ namespace UI.UserControls
 			this.svMainContent = svMainContent;
 			ticketLogic = new TicketLogic();
 			InitializeComponent();
-			FillEmployeeDropDown();
 			FillRoleDropDown();
 			FillPriorityDropDown();
 		}
-		public void FillEmployeeDropDown()
-		{
-			List<PartialUser> employees = ticketLogic.GetEmployees();
-			foreach (PartialUser employee in employees)
-			{
-				reportedByDropdown.Items.Add(employee);
-			}
-		}
+	
 		public void FillRoleDropDown()
 		{
 			foreach (Role role in Enum.GetValues(typeof(Role)))
@@ -67,7 +60,7 @@ namespace UI.UserControls
 
 			Ticket newTicket = CreateTicketFromForm();
 
-			// Attempt to save the ticket with exception handling
+			// exception handling
 			try
 			{
 				ticketLogic.SaveTicket(newTicket);
@@ -80,18 +73,12 @@ namespace UI.UserControls
 			}
 		}
 
-		// Method to validate the form fields
+		// validate the fields in form
 		private bool IsFormValid()
 		{
 			if (Datepicker.SelectedDate == null)
 			{
 				MessageBox.Show("Please select a date.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-				return false;
-			}
-
-			if (reportedByDropdown.SelectedItem == null)
-			{
-				MessageBox.Show("Please select the reporter.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
 				return false;
 			}
 
@@ -116,14 +103,16 @@ namespace UI.UserControls
 			return true;
 		}
 
-		// Method to create a Ticket object from form data
+		// create a Ticket object from form data
 		private Ticket CreateTicketFromForm()
 		{
+			PartialUser loggedInUser = new UserLogic().GetLoggedInPartialUser();
+
 			return new Ticket
 			{
 				occurred_at = (DateTime)Datepicker.SelectedDate,
-				reported_by = (PartialUser)reportedByDropdown.SelectedItem,
 				priority = priorityDropDown.SelectedItem.ToString(),
+				reported_by = loggedInUser, // Gebruik de PartialUser direct
 				description = txtBoxDescription.Text,
 				status = Status_Enum.Open.ToString(),
 				created_at = DateTime.Now
@@ -134,7 +123,6 @@ namespace UI.UserControls
 		private void ClearForm()
 		{
 			Datepicker.SelectedDate = null;
-			reportedByDropdown.SelectedIndex = -1;
 			priorityDropDown.SelectedIndex = -1;
 			txtBoxDescription.Clear();
 		}
