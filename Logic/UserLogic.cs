@@ -108,5 +108,25 @@ namespace Logic
         {
             userDao.UpdateEmployeeClearCode(employee);
         }
-    }
+
+		public PartialUser GetLoggedInPartialUser()
+		{
+			// Haal de volledige ingelogde gebruiker (Employee) op uit ApplicationStore
+			Employee loggedInEmployee = ApplicationStore.GetInstance().getLoggedInUser();
+
+			if (loggedInEmployee == null)
+			{
+				return null; // Geen ingelogde gebruiker
+			}
+
+			// Zet de Employee om naar PartialUser en retourneer deze
+			return new PartialUser
+			{
+				_id = loggedInEmployee._id,
+				name = loggedInEmployee.name,
+				email = loggedInEmployee.email,
+				phone_number = loggedInEmployee.phone_number
+			};
+		}
+	}
 }

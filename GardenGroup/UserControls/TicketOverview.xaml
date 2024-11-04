@@ -51,7 +51,7 @@
 		</StackPanel>
 
 		<Border BorderBrush="Black" BorderThickness="1" Grid.Row="1" Height="50" CornerRadius="7" HorizontalAlignment="Right" Background="#FF159BD4" Width="175">
-			<Button x:Name="IncidentButton" Content="CREATE INCIDENT" FontSize="14" Padding="15,1,15,1" BorderThickness="0" Background="{x:Null}" Foreground="White" Click="IncidentButton_Click"/>
+			<Button x:Name="CreateTicketbtn" Content="CREATE TICKET" FontSize="14" Padding="15,1,15,1" BorderThickness="0" Background="{x:Null}" Foreground="White" Click="CreateTicketbtn_Click"/>
 		</Border>
 
 		<DataGrid x:Name="TicketList" ItemsSource="{Binding Tickets}" Grid.Row="2" MinHeight="200" AutoGenerateColumns="False" CanUserAddRows="False">

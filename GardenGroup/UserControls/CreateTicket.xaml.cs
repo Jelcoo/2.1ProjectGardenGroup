@@ -1,4 +1,5 @@
-﻿using Logic;
+﻿using DAL;
+using Logic;
 using Model.Enums;
 using Model.Models;
 using System;
@@ -18,68 +19,119 @@ using System.Windows.Shapes;
 
 namespace UI.UserControls
 {
-    /// <summary>
-    /// Interaction logic for CreateTicket.xaml
-    /// </summary>
-    public partial class CreateTicket : UserControl
-    {
-        private TicketLogic ticketLogic;
+	/// <summary>
+	/// Interaction logic for CreateTicket.xaml
+	/// </summary>
+	public partial class CreateTicket : UserControl
+	{
+		private TicketLogic ticketLogic;
 		private ScrollViewer svMainContent;
 		public CreateTicket(ScrollViewer svMainContent)
-        {
-            this.svMainContent = svMainContent;
+		{
+			this.svMainContent = svMainContent;
 			ticketLogic = new TicketLogic();
-            InitializeComponent();
-            FillEmployeeDropDown();
-            FillRoleDropDown();
-            FillPriorityDropDown();
-        }
-        public void FillEmployeeDropDown()
-        {
-            List<PartialUser> employees = ticketLogic.GetEmployees();
-            foreach (PartialUser employee in employees)
-            {
-                reportedByDropdown.Items.Add(employee);
-            }
-        }
-        public void FillRoleDropDown()
-        {
-            foreach (Role role in Enum.GetValues(typeof(Role)))
-            {
-                roleDropDown.Items.Add(role);
-            }
-        }
+			InitializeComponent();
+			FillRoleDropDown();
+			FillPriorityDropDown();
+		}
+	
+		public void FillRoleDropDown()
+		{
+			foreach (Role role in Enum.GetValues(typeof(Role)))
+			{
+				roleDropDown.Items.Add(role);
+			}
+		}
 
-        public void FillPriorityDropDown()
-        {
-            foreach (Priority priority in Enum.GetValues(typeof(Priority)))
-            {
-                priorityDropDown.Items.Add(priority);
-            }
-        }
+		public void FillPriorityDropDown()
+		{
+			foreach (Priority priority in Enum.GetValues(typeof(Priority)))
+			{
+				priorityDropDown.Items.Add(priority);
+			}
+		}
 
-        private void btnSubmit_Click(object sender, RoutedEventArgs e)
-        {
-            Ticket newTicket = new Ticket();
+		private void btnSubmit_Click(object sender, RoutedEventArgs e)
+		{
+			if (!IsFormValid())
+			{
+				return;
+			}
 
-            // Haal de waarden op van de verschillende velden in het formulier
-            newTicket.occurred_at = (DateTime)Datepicker.SelectedDate; // Datum uit DatePicker
-            newTicket.reported_by = (PartialUser)reportedByDropdown.SelectedItem; // Gebruiker uit ComboBox (
-            newTicket.priority = priorityDropDown.SelectedItem.ToString(); // Prioriteit uit ComboBox
-            newTicket.description = txtBoxDescription.Text; // Beschrijving uit TextBox
-            newTicket.status = Status_Enum.Open.ToString(); // 
-            newTicket.created_at = DateTime.Now;
+			Ticket newTicket = CreateTicketFromForm();
 
-            // Verwerk het nieuwe ticket
-            ticketLogic.SaveTicket(newTicket);
+			// exception handling
+			try
+			{
+				ticketLogic.SaveTicket(newTicket);
+				MessageBox.Show("Ticket successfully created!", "Confirmation", MessageBoxButton.OK, MessageBoxImage.Information);
+				ClearForm(); // Optionally clear the form
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show("An error occurred while saving the ticket: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+			}
+		}
 
-            MessageBox.Show("Ticket succesvol aangemaakt!", "Bevestiging", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
+		// validate the fields in form
+		private bool IsFormValid()
+		{
+			if (Datepicker.SelectedDate == null)
+			{
+				MessageBox.Show("Please select a date.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+				return false;
+			}
+
+			if (priorityDropDown.SelectedItem == null)
+			{
+				MessageBox.Show("Please select a priority level.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+				return false;
+			}
+			
+			if(roleDropDown.SelectedItem == null)
+			{
+				MessageBox.Show("Please select a role.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+				return false;
+			}
+
+			if (string.IsNullOrWhiteSpace(txtBoxDescription.Text))
+			{
+				MessageBox.Show("Please enter a description.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+				return false;
+			}
+
+			return true;
+		}
+
+		// create a Ticket object from form data
+		private Ticket CreateTicketFromForm()
+		{
+			PartialUser loggedInUser = new UserLogic().GetLoggedInPartialUser();
+
+			return new Ticket
+			{
+				occurred_at = (DateTime)Datepicker.SelectedDate,
+				priority = priorityDropDown.SelectedItem.ToString(),
+				reported_by = loggedInUser, // Gebruik de PartialUser direct
+				description = txtBoxDescription.Text,
+				status = Status_Enum.Open.ToString(),
+				created_at = DateTime.Now
+			};
+		}
+
+		// method to clear the form after successful submission
+		private void ClearForm()
+		{
+			Datepicker.SelectedDate = null;
+			priorityDropDown.SelectedIndex = -1;
+			txtBoxDescription.Clear();
+		}
 
 		private void btnCancel_Click(object sender, RoutedEventArgs e)
 		{
 			TicketOverview ticketOverviewScreen = new TicketOverview(svMainContent);
 			svMainContent.Content = ticketOverviewScreen;
 		}
+
 	}
 }

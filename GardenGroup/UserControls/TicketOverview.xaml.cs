@@ -92,7 +92,6 @@ namespace UI.UserControls
 					// Definieer bools voor match per eigenschap.
 					bool titleMatch = ticket.title.ToLower().Contains(filterText);
 					bool statusMatch = ticket.status.ToString().ToLower().Contains(filterText);
-					bool assignedToMatch = ticket.assigned_to.name.ToLower().Contains(filterText);
 
 					// Toepassen van de geselecteerde filterlogica.
 					switch (filterType.Text)
@@ -101,8 +100,6 @@ namespace UI.UserControls
 							return titleMatch;
 						case "Status":
 							return statusMatch;
-						case "Assigned to":
-							return assignedToMatch;
 						case "AND (&) OR (|)":
 							return ApplyComplexFilter(ticket, filterText);
 						default:
@@ -157,13 +154,11 @@ namespace UI.UserControls
 		{
 			bool titleMatch = ticket.title.ToLower().Contains(segment);
 			bool statusMatch = ticket.status.ToString().ToLower().Contains(segment);
-			bool assignedToMatch = ticket.assigned_to.name.ToLower().Contains(segment);
-
 			// Retourneer true als het segment in een van de eigenschappen voorkomt.
-			return titleMatch || statusMatch || assignedToMatch;
+			return titleMatch || statusMatch;
 		}
 
-		private void IncidentButton_Click(object sender, RoutedEventArgs e)
+		private void CreateTicketbtn_Click(object sender, RoutedEventArgs e)
 		{
 			if (svMainContent == null)
 			{

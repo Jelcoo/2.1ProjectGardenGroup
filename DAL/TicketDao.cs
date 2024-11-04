@@ -23,23 +23,8 @@ namespace DAL
 				.Aggregate()
 				.ToList();
 
-			return tickets;
-		}
-		public List<PartialUser> Getemployees()
-		{
-			List<PartialUser> employees = Db.GetCollection<PartialUser>("employees")
-				.Aggregate()
-				.Project(e => new PartialUser
-				{
-					_id = e._id,
-					name = e.name,
-					email = e.email,
-					phone_number = e.phone_number
-				})
-				.ToList();
-
-			return employees;
-		}
+            return tickets;
+        }
 
 		public void SaveTicket(Ticket ticket)
 		{
