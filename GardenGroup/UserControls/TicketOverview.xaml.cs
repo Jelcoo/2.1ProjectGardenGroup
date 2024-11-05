@@ -30,6 +30,7 @@ namespace UI.UserControls
 			InitializeComponent();
 			this.svMainContent = svMainContent;
 			Tickets = new ObservableCollection<Ticket>();
+			ticketLogic = new TicketLogic();
 			this.DataContext = this;
 
 			// Create a time to act as a delay for the filtering logic.
@@ -43,15 +44,18 @@ namespace UI.UserControls
 
 		private void UserControl_Loaded(object sender, RoutedEventArgs e)
 		{
-			ticketLogic = new TicketLogic();
-			List<Ticket> tickets = ticketLogic.GetTicketsEmployees(loggedInUser);
+			LoadTickets();
+			//ticketLogic.ChangeTicketStatus("b228c211-6b6e-4807-a41f-a515cc769be4", Model.Enums.Status_Enum.Closed);
+		}
 
+		private void LoadTickets()
+		{
+			List<Ticket> tickets = ticketLogic.GetTicketsEmployees(loggedInUser);
 			Tickets.Clear();
 			foreach (var ticket in tickets)
 			{
 				Tickets.Add(ticket);
 			}
-			//ticketLogic.ChangeTicketStatus("b228c211-6b6e-4807-a41f-a515cc769be4", Model.Enums.Status_Enum.Closed);
 		}
 
 		private void Timer_Tick(object sender, EventArgs e)
@@ -73,24 +77,29 @@ namespace UI.UserControls
 
 		private void ApplyFilter(string searchQuery)
 		{
-			//check if user selected the "Full search" filter
-			if (filterType.Text == "Full search")
-			{
-				SearchInDatabase(searchQuery);
-				return;
-			}
-
 			// Haalt de huidige weergave van de DataGrid op als een CollectionView.
 			CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(TicketList.ItemsSource);
 
-			// Zet de invoer in kleine letters voor eenvoudiger vergelijken.
-			string filterText = tbFilterInput.Text.ToLower();
+			// reset the filter before applying a new one
+			view.Filter = null;
+
+			//check if user selected the "Full search" filter
+			if (filterType.Text == "Full search")
+			{
+				if (searchQuery.Length == 0)
+					LoadTickets();
+				else
+					SearchInDatabase(searchQuery);
+				return;
+			}
 
 			// Stel de filterfunctie voor de CollectionView in.
 			view.Filter = item =>
 			{
 				if (item is Ticket ticket)
 				{
+					// Zet de invoer in kleine letters voor eenvoudiger vergelijken.
+					string filterText = tbFilterInput.Text.ToLower();
 					return SwitchFilter(filterText, ticket);
 				}
 				return false;
@@ -196,10 +205,6 @@ namespace UI.UserControls
 			{
 				// Retrieve the logged-in user from ApplicationStore
 				Employee loggedInUser = ApplicationStore.GetInstance().getLoggedInUser();
-
-
-
-
 
 				// Pass the ticket ID and logged-in user to TicketDetail
 				var ticketDetail = new TicketDetail(selectedTicket._id.ToString(), loggedInUser);
