@@ -12,8 +12,6 @@ namespace Model.Models
 {
     public class Employee : PartialUser
     {
-        public Role role { get; set; }
-
         public string password_hashed { get; set; }
         public string password_salt { get; set; }
 
