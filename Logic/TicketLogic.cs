@@ -49,16 +49,24 @@ namespace Logic
         public void AddCommentToTicket(ObjectId ticketId, Comment comment)
         {
             commentLogic.AddComment(comment);
-            ticketDao.AddCommentIdToTicket(ticketId, comment._id);  
+            ticketDao.AddCommentIdToTicket(ticketId, comment._id);
         }
 
 
-         //methode om de ticket en bijbehorende comment op te halen
+        //methode om de ticket en bijbehorende comment op te halen
         public (Ticket, List<Comment>) GetTicketWithComments(ObjectId ticketId)
         {
             var ticket = ticketDao.GetTicketById(ticketId);
-            var comments = commentLogic.GetCommentsForTicket(ticketId); 
+            var comments = commentLogic.GetCommentsForTicket(ticketId);
             return (ticket, comments);
         }
+
+        public void AssignTicketToEmployee(PartialUser employee, Ticket ticket)
+        {
+            ticketDao.UpdateAssigneTo(ticket, employee);
+        }
+
+
+
     }
 }
