@@ -56,7 +56,7 @@ namespace UI.UserControls
 		{
 			List<Ticket> tickets = ticketLogic.GetTicketsEmployees(loggedInUser);
 			Tickets.Clear();
-			foreach (var ticket in tickets)
+			foreach (Ticket ticket in tickets)
 			{
 				Tickets.Add(ticket);
 			}
@@ -203,7 +203,7 @@ namespace UI.UserControls
 
 		private void ViewTicketDetails_Click(object sender, RoutedEventArgs e)
 		{
-			var selectedTicket = (Ticket)((Button)sender).DataContext;
+			Ticket selectedTicket = (Ticket)((Button)sender).DataContext;
 
 			if (selectedTicket != null)
 			{
@@ -211,14 +211,14 @@ namespace UI.UserControls
 				Employee loggedInUser = ApplicationStore.GetInstance().getLoggedInUser();
 
 				// Pass the ticket ID and logged-in user to TicketDetail
-				var ticketDetail = new TicketDetail(selectedTicket._id.ToString(), loggedInUser);
+				TicketDetail ticketDetail = new TicketDetail(selectedTicket._id.ToString(), loggedInUser);
 				ticketDetail.ShowDialog();
 			}
 		}
 		private void CloseTicket_Click(object sender, RoutedEventArgs e)
 		{
 			// get the ticket from the button's DataContext/from the selected row
-			var selectedTicket = (Ticket)((Button)sender).DataContext;
+			Ticket selectedTicket = (Ticket)((Button)sender).DataContext;
 			if (selectedTicket != null)
 			{
 				CloseTicket(selectedTicket);
