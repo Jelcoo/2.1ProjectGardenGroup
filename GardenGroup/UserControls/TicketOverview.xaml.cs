@@ -18,6 +18,9 @@ namespace UI.UserControls
 	public partial class TicketOverview : UserControl
 	{
 		private ScrollViewer svMainContent;
+
+		// create an ObservableCollection to store the tickets.
+		// observable collections are used to notify the UI when the collection has changed.
 		public ObservableCollection<Ticket> Tickets { get; set; }
 		private TicketLogic ticketLogic;
 
@@ -45,8 +48,8 @@ namespace UI.UserControls
 
 		private void UserControl_Loaded(object sender, RoutedEventArgs e)
 		{
+			// load tickets on page load
 			LoadTickets();
-			//ticketLogic.ChangeTicketStatus("b228c211-6b6e-4807-a41f-a515cc769be4", Model.Enums.Status_Enum.Closed);
 		}
 
 		private void LoadTickets()
@@ -64,7 +67,7 @@ namespace UI.UserControls
 			// Stop the timer
 			_timer.Stop();
 
-			// Execute your filtering logic here
+			// run the filter after the delay has ended
 			string searchQuery = tbFilterInput.Text;
 			ApplyFilter(searchQuery); // Your method to filter the data
 		}
@@ -214,10 +217,13 @@ namespace UI.UserControls
 		}
 		private void CloseTicket_Click(object sender, RoutedEventArgs e)
 		{
+			// get the ticket from the button's DataContext/from the selected row
 			var selectedTicket = (Ticket)((Button)sender).DataContext;
 			if (selectedTicket != null)
 			{
 				CloseTicket(selectedTicket);
+
+				// Remove the ticket from the ObservableCollection
 				Tickets.Remove(selectedTicket);
 			}
 		}
