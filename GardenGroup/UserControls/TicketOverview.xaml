@@ -54,14 +54,7 @@
 			<Button x:Name="CreateTicketbtn" Content="CREATE TICKET" FontSize="14" Padding="15,1,15,1" BorderThickness="0" Background="{x:Null}" Foreground="White" Click="CreateTicketbtn_Click"/>
 		</Border>
 
-		<DataGrid x:Name="TicketList" ItemsSource="{Binding Tickets}" Grid.Row="2" MinHeight="200" AutoGenerateColumns="False" CanUserAddRows="False">
-			<!--<DataGrid.ItemContainerStyle>
-				<Style TargetType="{x:Type ListViewItem}">
-					-->
-			<!-- Setters, Triggers, etc. -->
-			<!--
-				</Style>
-			</DataGrid.ItemContainerStyle>-->
+		<DataGrid x:Name="TicketList" ItemsSource="{Binding Tickets}" Grid.Row="2" MinHeight="200" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True">
 			<DataGrid.Columns>
 				<DataGridTextColumn Header="Title" Binding="{Binding title}"/>
 				<DataGridTextColumn Header="Status" Binding="{Binding status}"/>
