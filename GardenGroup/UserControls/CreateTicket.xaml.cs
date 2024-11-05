@@ -73,9 +73,9 @@ namespace UI.UserControls
 				return false;
 			}
 
-			if (priorityDropDown.SelectedItem == null)
+			if (string.IsNullOrWhiteSpace(txtBoxTitle.Text))
 			{
-				MessageBox.Show("Please select a priority level.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+				MessageBox.Show("Please enter a title. ", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
 				return false;
 			}
 			

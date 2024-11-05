@@ -16,8 +16,9 @@ namespace Model.Models
         public string name { get; set; }
         public string email { get; set; }
         public string phone_number { get; set; }
-        public Role Role { get; set; }
-        public override string ToString()
+		public Role role { get; set; }
+
+		public override string ToString()
         {
             return name;
         }
