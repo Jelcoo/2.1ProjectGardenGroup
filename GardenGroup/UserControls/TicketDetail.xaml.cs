@@ -14,9 +14,10 @@ namespace UI.UserControls
     public partial class TicketDetail : Window
     {
         private readonly TicketLogic ticketLogic = new TicketLogic();
+        private readonly UserLogic userLogic = new UserLogic();
         private readonly ObjectId ticketId;  // inplaats van string objectId
         private readonly Employee loggedInUser;
-        public List<PartialUser> employees;
+        public List<Employee> employees;
         private PartialUser selectedEmployee;
 
 
@@ -95,7 +96,7 @@ namespace UI.UserControls
         {
             if (loggedInUser.role == Role.ServiceDesk)
             {
-                employees = ticketLogic.GetEmployees();
+                employees = userLogic.GetAllUsers();
                 labelPersonInCharge.Visibility = Visibility.Visible;
                 ComboBoxEmployee.Visibility = Visibility.Visible;
                 ComboBoxEmployee.ItemsSource = employees;
@@ -117,10 +118,6 @@ namespace UI.UserControls
         {
             // Get the entire selected employee object from combobox
             selectedEmployee = ComboBoxEmployee.SelectedItem as PartialUser;
-
         }
-
-
-
     }
 }
