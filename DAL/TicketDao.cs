@@ -117,16 +117,52 @@ namespace DAL
 
         public List<TicketsCount> GetTicketsPastDeadlineCount()
         {
-            List<TicketsCount> tickets = Db.GetCollection<Ticket>("tickets")
-                .Aggregate()
-                .Match(e => e.status == "open"
-                && e.created_at < DateTime.UtcNow)
-                .Group(g => "Tickets Past Deadline",
-                g => new TicketsCount
-                {
-                    _id = g.Key,
-                    count = g.Count(),
-                }).ToList();
+            var tickets = Db.GetCollection<Ticket>("tickets")
+    .Aggregate()
+    .AppendStage<BsonDocument>(new BsonDocument
+    {
+        { "$match", new BsonDocument
+            {
+                { "status", "open" }
+            }
+        }
+    })
+    .AppendStage<BsonDocument>(new BsonDocument
+    {
+        { "$addFields", new BsonDocument
+            {
+                { "createdAtDate", new BsonDocument
+                    {
+                        { "$dateFromString", new BsonDocument { { "dateString", "$created_at" } } }
+                    }
+                }
+            }
+        }
+    })
+    .AppendStage<BsonDocument>(new BsonDocument
+    {
+        { "$match", new BsonDocument
+            {
+                { "createdAtDate", new BsonDocument { { "$lt", DateTime.UtcNow } } }
+            }
+        }
+    })
+    .AppendStage<BsonDocument>(new BsonDocument
+    {
+        { "$group", new BsonDocument
+            {
+                { "_id", "Tickets Past Deadline" },
+                { "count", new BsonDocument { { "$sum", 1 } } }
+            }
+        }
+    })
+    .ToList()
+    .Select(g => new TicketsCount
+    {
+        _id = g["_id"].AsString,
+        count = g["count"].AsInt32
+    })
+    .ToList();
 
             return tickets;
 

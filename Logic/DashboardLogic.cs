@@ -45,11 +45,12 @@ namespace Logic
         //this metod fills the data needed for the PieChart/Gauge for the Open Tickets
         private void FillPieChartOpenAndClosedTickets(List<TicketsCount> openTicketsCounts, List<TicketsCount> closedTicketsCounts)
         {
-            GaugeTotalOpenTickets = closedTicketsCounts.Count();
             int openTicketsCount = 0;
             if (openTicketsCounts.Count > 0)
             {
-                openTicketsCount = openTicketsCounts.Count;
+                GaugeTotalOpenTickets = closedTicketsCounts[0].count;
+
+                openTicketsCount = openTicketsCounts[0].count;
             }
 
             ClosedAndOpenTicketsSeries = new GaugeBuilder()
@@ -65,11 +66,11 @@ namespace Logic
         //this metod fills the data needed for the PieChart/Gauge for the Tickets Past the Deadline
         private void FillPieChartPastDealineTickets(List<TicketsCount> ticketsPastDeadline, List<TicketsCount> closedTicketsCounts)
         {
-            GaugeTotalPastDeadlineTickets = closedTicketsCounts.Count();
             int count = 0;
             if (ticketsPastDeadline.Count > 0)
             {
-                count = ticketsPastDeadline.Count;
+                GaugeTotalPastDeadlineTickets = closedTicketsCounts[0].count;
+                count = ticketsPastDeadline[0].count;
             }
 
             TicketsPastDeadlineSeries = new GaugeBuilder()
