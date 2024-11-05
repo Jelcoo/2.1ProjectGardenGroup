@@ -92,6 +92,8 @@ namespace UI.UserControls
 					// Definieer bools voor match per eigenschap.
 					bool titleMatch = ticket.title.ToLower().Contains(filterText);
 					bool statusMatch = ticket.status.ToString().ToLower().Contains(filterText);
+					bool assignedToMatch = ticket.assigned_to.name.ToLower().Contains(filterText);
+					bool priorityMatch = ticket.priority.ToString().ToLower().Contains(filterText);
 
 					// Toepassen van de geselecteerde filterlogica.
 					switch (filterType.Text)
@@ -100,6 +102,10 @@ namespace UI.UserControls
 							return titleMatch;
 						case "Status":
 							return statusMatch;
+						case "Assigned to":
+							return assignedToMatch;
+						case "Priority":
+							return priorityMatch;
 						case "AND (&) OR (|)":
 							return ApplyComplexFilter(ticket, filterText);
 						default:
@@ -154,8 +160,10 @@ namespace UI.UserControls
 		{
 			bool titleMatch = ticket.title.ToLower().Contains(segment);
 			bool statusMatch = ticket.status.ToString().ToLower().Contains(segment);
-			// Retourneer true als het segment in een van de eigenschappen voorkomt.
-			return titleMatch || statusMatch;
+            bool assignedToMatch = ticket.assigned_to.name.ToLower().Contains(segment);
+            bool priorityMatch = ticket.priority.ToString().ToLower().Contains(segment);
+            // Retourneer true als het segment in een van de eigenschappen voorkomt.
+            return titleMatch || statusMatch || assignedToMatch || priorityMatch;
 		}
 
 		private void CreateTicketbtn_Click(object sender, RoutedEventArgs e)
