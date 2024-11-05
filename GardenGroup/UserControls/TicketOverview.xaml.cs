@@ -18,6 +18,9 @@ namespace UI.UserControls
 	public partial class TicketOverview : UserControl
 	{
 		private ScrollViewer svMainContent;
+
+		// create an ObservableCollection to store the tickets.
+		// observable collections are used to notify the UI when the collection has changed.
 		public ObservableCollection<Ticket> Tickets { get; set; }
 		private TicketLogic ticketLogic;
 
@@ -45,15 +48,15 @@ namespace UI.UserControls
 
 		private void UserControl_Loaded(object sender, RoutedEventArgs e)
 		{
+			// load tickets on page load
 			LoadTickets();
-			//ticketLogic.ChangeTicketStatus("b228c211-6b6e-4807-a41f-a515cc769be4", Model.Enums.Status_Enum.Closed);
 		}
 
 		private void LoadTickets()
 		{
 			List<Ticket> tickets = ticketLogic.GetTicketsEmployees(loggedInUser);
 			Tickets.Clear();
-			foreach (var ticket in tickets)
+			foreach (Ticket ticket in tickets)
 			{
 				Tickets.Add(ticket);
 			}
@@ -64,7 +67,7 @@ namespace UI.UserControls
 			// Stop the timer
 			_timer.Stop();
 
-			// Execute your filtering logic here
+			// run the filter after the delay has ended
 			string searchQuery = tbFilterInput.Text;
 			ApplyFilter(searchQuery); // Your method to filter the data
 		}
@@ -200,7 +203,7 @@ namespace UI.UserControls
 
 		private void ViewTicketDetails_Click(object sender, RoutedEventArgs e)
 		{
-			var selectedTicket = (Ticket)((Button)sender).DataContext;
+			Ticket selectedTicket = (Ticket)((Button)sender).DataContext;
 
 			if (selectedTicket != null)
 			{
@@ -208,17 +211,20 @@ namespace UI.UserControls
 				Employee loggedInUser = ApplicationStore.GetInstance().getLoggedInUser();
 
 				// Pass the ticket ID and logged-in user to TicketDetail
-				var ticketDetail = new TicketDetail(selectedTicket._id.ToString(), loggedInUser);
+				TicketDetail ticketDetail = new TicketDetail(selectedTicket._id.ToString(), loggedInUser);
 				ticketDetail.ShowDialog();
 			}
 		}
 		private void CloseTicket_Click(object sender, RoutedEventArgs e)
 		{
-			var selectedTicket = (Ticket)((Button)sender).DataContext;
+			// get the ticket from the button's DataContext/from the selected row
+			Ticket selectedTicket = (Ticket)((Button)sender).DataContext;
 			if (selectedTicket != null)
 			{
 				CloseTicket(selectedTicket);
-				LoadTickets();
+
+				// Remove the ticket from the ObservableCollection
+				Tickets.Remove(selectedTicket);
 			}
 		}
 
