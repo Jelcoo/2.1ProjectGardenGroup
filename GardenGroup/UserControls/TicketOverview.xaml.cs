@@ -218,7 +218,7 @@ namespace UI.UserControls
 			if (selectedTicket != null)
 			{
 				CloseTicket(selectedTicket);
-				LoadTickets();
+				Tickets.Remove(selectedTicket);
 			}
 		}
 
