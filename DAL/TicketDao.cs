@@ -23,16 +23,20 @@ namespace DAL
 			ticketCollection.InsertOne(ticket);
 		}
 
-		public List<Ticket> GetTicketsEmployees()
+		public List<Ticket> GetTicketsEmployees(PartialUser loggedInUser)
 		{
-			List<Ticket> tickets = Db.GetCollection<Ticket>("tickets")
+			IAggregateFluent<Ticket> tickets = Db.GetCollection<Ticket>("tickets")
 				.Aggregate()
-				.Match(e => e.status == "open")
-				.SortByDescending(t => t.created_at)
+				.Match(e => e.status == "open");
+
+			if (loggedInUser.role == Role.Employee)
+			{
+				tickets = tickets.Match(t => t.reported_by._id == loggedInUser._id);
+			}
+
+			return tickets.SortByDescending(t => t.created_at)
 				.Limit(25)
 				.ToList();
-
-			return tickets;
 		}
 
 		public List<Ticket> GetTicketsByStatus(Status_Enum status)
@@ -47,7 +51,7 @@ namespace DAL
 			return tickets;
 		}
 
-		public List<Ticket> SearchTickets(string searchQuery)
+		public List<Ticket> SearchTickets(string searchQuery, PartialUser loggedInUser)
 		{
 			FilterDefinitionBuilder<Ticket> builder = Builders<Ticket>.Filter;
 			FilterDefinition<Ticket> filter = builder.Empty;
@@ -65,9 +69,16 @@ namespace DAL
 				filter = CreateAndFilter(searchQuery, builder);
 			}
 
-			return Db.GetCollection<Ticket>("tickets")
-				.Find(filter)
-				.Sort(Builders<Ticket>.Sort.Descending(ticket => ticket.created_at))
+			IAggregateFluent<Ticket> tickets = Db.GetCollection<Ticket>("tickets")
+				.Aggregate()
+				.Match(filter);
+
+			if (loggedInUser.role == Role.Employee)
+			{
+				tickets = tickets.Match(t => t.reported_by._id == loggedInUser._id);
+			}
+
+			return tickets.Sort(Builders<Ticket>.Sort.Descending(ticket => ticket.created_at))
 				.Limit(25)
 				.ToList();
 		}
@@ -177,21 +188,21 @@ namespace DAL
 			var filter = Builders<Ticket>.Filter.Eq("_id", ticketId);
 			var update = Builders<Ticket>.Update.Push("commentIds", commentId);
 			Db.GetCollection<Ticket>("tickets").UpdateOne(filter, update);
-        }
+		}
 
-        public void UpdateAssigneTo(Ticket ticket, PartialUser employee)
-        {
-            var filter = Builders<Ticket>.Filter.Or(
-                Builders<Ticket>.Filter.Eq("_id", ticket._id)
-            );
+		public void UpdateAssigneTo(Ticket ticket, PartialUser employee)
+		{
+			var filter = Builders<Ticket>.Filter.Or(
+				Builders<Ticket>.Filter.Eq("_id", ticket._id)
+			);
 
-            var update = Builders<Ticket>.Update
-                .Set("assigned_to._id", employee._id)
-                .Set("assigned_to.name", employee.name)
-                .Set("resolved_by.email", employee.email)
-                .Set("resolved_by.phone_number", employee.phone_number);
+			var update = Builders<Ticket>.Update
+				.Set("assigned_to._id", employee._id)
+				.Set("assigned_to.name", employee.name)
+				.Set("resolved_by.email", employee.email)
+				.Set("resolved_by.phone_number", employee.phone_number);
 
-            Db.GetCollection<Ticket>("tickets").UpdateOne(filter, update);
-        }
-    }
+			Db.GetCollection<Ticket>("tickets").UpdateOne(filter, update);
+		}
+	}
 }

@@ -20,6 +20,8 @@ namespace UI.UserControls
 		public ObservableCollection<Ticket> Tickets { get; set; }
 		private TicketLogic ticketLogic;
 
+		PartialUser loggedInUser = new UserLogic().GetLoggedInPartialUser();
+
 		private DispatcherTimer _timer;
 		private const int _delay = 500;
 
@@ -42,7 +44,7 @@ namespace UI.UserControls
 		private void UserControl_Loaded(object sender, RoutedEventArgs e)
 		{
 			ticketLogic = new TicketLogic();
-			List<Ticket> tickets = ticketLogic.GetTicketsEmployees();
+			List<Ticket> tickets = ticketLogic.GetTicketsEmployees(loggedInUser);
 
 			Tickets.Clear();
 			foreach (var ticket in tickets)
@@ -129,7 +131,7 @@ namespace UI.UserControls
 			// Do not search if the search query is less than 3 characters
 			if (searchQuery.Length >= 3)
 			{
-				List<Ticket> tickets = ticketLogic.SearchTickets(searchQuery);
+				List<Ticket> tickets = ticketLogic.SearchTickets(searchQuery, loggedInUser);
 				Tickets.Clear();
 				foreach (Ticket tkt in tickets)
 				{
@@ -166,10 +168,10 @@ namespace UI.UserControls
 		{
 			bool titleMatch = ticket.title.ToLower().Contains(segment);
 			bool statusMatch = ticket.status.ToString().ToLower().Contains(segment);
-            bool assignedToMatch = ticket.assigned_to.name.ToLower().Contains(segment);
-            bool priorityMatch = ticket.priority.ToString().ToLower().Contains(segment);
-            // Retourneer true als het segment in een van de eigenschappen voorkomt.
-            return titleMatch || statusMatch || assignedToMatch || priorityMatch;
+			bool assignedToMatch = ticket.assigned_to.name.ToLower().Contains(segment);
+			bool priorityMatch = ticket.priority.ToString().ToLower().Contains(segment);
+			// Retourneer true als het segment in een van de eigenschappen voorkomt.
+			return titleMatch || statusMatch || assignedToMatch || priorityMatch;
 		}
 
 		private void CreateTicketbtn_Click(object sender, RoutedEventArgs e)
