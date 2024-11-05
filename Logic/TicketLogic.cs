@@ -27,17 +27,9 @@ namespace Logic
         {
             return ticketDao.GetTicketsEmployees();
         }
-        public List<Ticket> GetTicketsByStatus(Status_Enum status)
-        {
-            return ticketDao.GetTicketsByStatus(status);
-        }
         public List<Ticket> SearchTickets(string searchQuery)
         {
             return ticketDao.SearchTickets(searchQuery);
-        }
-        public void ChangeTicketStatus(ObjectId ticketId, Status_Enum status)
-        {
-            ticketDao.ChangeTicketStatus(ticketId, status);
         }
 
         public void AddCommentToTicket(ObjectId ticketId, Comment comment)
@@ -46,8 +38,7 @@ namespace Logic
             ticketDao.AddCommentIdToTicket(ticketId, comment._id);
         }
 
-
-         //methode om de ticket en bijbehorende comment op te halen
+        //methode om de ticket en bijbehorende comment op te halen
         public (Ticket, List<Comment>) GetTicketWithComments(ObjectId ticketId)
         {
             var ticket = ticketDao.GetTicketById(ticketId);
@@ -59,8 +50,5 @@ namespace Logic
         {
             ticketDao.UpdateAssigneTo(ticket, employee);
         }
-
-
-
     }
 }

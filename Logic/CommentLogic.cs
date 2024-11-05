@@ -20,11 +20,5 @@ namespace Logic
         {
             return commentDao.GetCommentsByTicketId(ticketId);
         }
-
-        public List<Comment> GetCommentsByIds(List<ObjectId> commentIds)
-        {
-            return commentDao.GetCommentsByIds(commentIds);
-        }
-
     }
 }

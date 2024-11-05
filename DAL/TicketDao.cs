@@ -17,15 +17,6 @@ namespace DAL
 
 		}
 
-		public List<Ticket> GetTickets()
-		{
-			List<Ticket> tickets = Db.GetCollection<Ticket>("tickets")
-				.Aggregate()
-				.ToList();
-
-            return tickets;
-        }
-
 		public void SaveTicket(Ticket ticket)
 		{
 			IMongoCollection<Ticket> ticketCollection = Db.GetCollection<Ticket>("tickets");
@@ -186,14 +177,12 @@ namespace DAL
 			var filter = Builders<Ticket>.Filter.Eq("_id", ticketId);
 			var update = Builders<Ticket>.Update.Push("commentIds", commentId);
 			Db.GetCollection<Ticket>("tickets").UpdateOne(filter, update);
-		}
-	}
-  
-  public void UpdateAssigneTo(Ticket ticket, PartialUser employee)
+        }
+
+        public void UpdateAssigneTo(Ticket ticket, PartialUser employee)
         {
             var filter = Builders<Ticket>.Filter.Or(
                 Builders<Ticket>.Filter.Eq("_id", ticket._id)
-
             );
 
             var update = Builders<Ticket>.Update

@@ -118,20 +118,5 @@ namespace DAL
             Db.GetCollection<Employee>("employees")
                 .UpdateOne(u => u._id == employee._id, updateDefinition);
         }
-
-        //public List<Employee> GetEmployeesWithTickets()
-        //{
-        //  var pipeline = Db.GetCollection<Employee>("employees")
-        //    .Aggregate()
-        //  .Lookup<Employee, Ticket, Employee>(
-        //    "tickets",         
-        //  "Id",               
-        //"EmployeeId",       
-        //@as: "Tickets"      
-        // )
-        //.ToList();
-
-        //return pipeline;
-        // }
     }
 }
