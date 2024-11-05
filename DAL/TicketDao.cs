@@ -188,4 +188,21 @@ namespace DAL
 			Db.GetCollection<Ticket>("tickets").UpdateOne(filter, update);
 		}
 	}
+  
+  public void UpdateAssigneTo(Ticket ticket, PartialUser employee)
+        {
+            var filter = Builders<Ticket>.Filter.Or(
+                Builders<Ticket>.Filter.Eq("_id", ticket._id)
+
+            );
+
+            var update = Builders<Ticket>.Update
+                .Set("assigned_to._id", employee._id)
+                .Set("assigned_to.name", employee.name)
+                .Set("resolved_by.email", employee.email)
+                .Set("resolved_by.phone_number", employee.phone_number);
+
+            Db.GetCollection<Ticket>("tickets").UpdateOne(filter, update);
+        }
+    }
 }

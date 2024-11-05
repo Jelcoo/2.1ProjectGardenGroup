@@ -1,9 +1,13 @@
-﻿using Logic;
+﻿using DAL;
+using Logic;
+using Model.Enums;
 using Model.Models;
 using MongoDB.Bson;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace UI.UserControls
 {
@@ -11,7 +15,10 @@ namespace UI.UserControls
     {
         private readonly TicketLogic ticketLogic = new TicketLogic();
         private readonly ObjectId ticketId;  // inplaats van string objectId
-        private readonly Employee loggedInUser; 
+        private readonly Employee loggedInUser;
+        public List<PartialUser> employees;
+        private PartialUser selectedEmployee;
+
 
 
         public Ticket SelectedTicket { get; set; }
@@ -20,6 +27,7 @@ namespace UI.UserControls
         public TicketDetail(string ticketIdString, Employee loggedInUser)
         {
             InitializeComponent();
+            EnableAssignToPerson(loggedInUser);
             this.loggedInUser = loggedInUser; // ingelogde gebruiker opslaan
 
 
@@ -47,30 +55,72 @@ namespace UI.UserControls
 
         private void AddCommentButton_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(NewCommentTextBox.Text))
+            if (string.IsNullOrWhiteSpace(NewCommentTextBox.Text) && selectedEmployee == null)
             {
                 MessageBox.Show("Please enter a comment.");
                 return;
             }
-
-            // nieuwe comment aanmaken met ticketid/objectid
-            var newComment = new Comment
+            else if (string.IsNullOrWhiteSpace(NewCommentTextBox.Text) && selectedEmployee != null)
             {
-                ticketId = ticketId, 
-                message = NewCommentTextBox.Text,
-                commentedBy = new PartialUser { _id = loggedInUser._id, name = loggedInUser.name },
-                commentedAt = DateTime.UtcNow
-            };
+                UpdateAssignTo();
+            }
+            else
+            {
+                // nieuwe comment aanmaken met ticketid/objectid
+                var newComment = new Comment
+                {
+                    ticketId = ticketId,
+                    message = NewCommentTextBox.Text,
+                    commentedBy = new PartialUser { _id = loggedInUser._id, name = loggedInUser.name },
+                    commentedAt = DateTime.UtcNow
+                };
 
-            // Voeg de opmerking toe aan het ticket
-            ticketLogic.AddCommentToTicket(ticketId, newComment);
-            LinkedComments.Add(newComment);
-            NewCommentTextBox.Clear();
+                // Voeg de opmerking toe aan het ticket
+                ticketLogic.AddCommentToTicket(ticketId, newComment);
+                LinkedComments.Add(newComment);
+                NewCommentTextBox.Clear();
+                if (selectedEmployee != null)
+                {
+                    UpdateAssignTo();
+                }
+            }
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
+
+        private void EnableAssignToPerson(Employee loggedInUser)
+        {
+            if (loggedInUser.role == Role.ServiceDesk)
+            {
+                employees = ticketLogic.GetEmployees();
+                labelPersonInCharge.Visibility = Visibility.Visible;
+                ComboBoxEmployee.Visibility = Visibility.Visible;
+                ComboBoxEmployee.ItemsSource = employees;
+                ComboBoxEmployee.DisplayMemberPath = "name";
+                ComboBoxEmployee.SelectedValuePath = "_id";
+
+            }
+        }
+
+        private void UpdateAssignTo()
+        {
+            if (selectedEmployee != null)
+            {
+                ticketLogic.AssignTicketToEmployee(selectedEmployee, SelectedTicket);
+            }
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Get the entire selected employee object from combobox
+            selectedEmployee = ComboBoxEmployee.SelectedItem as PartialUser;
+
+        }
+
+
+
     }
 }
