@@ -125,7 +125,7 @@ namespace Logic
 				_id = loggedInEmployee._id,
 				name = loggedInEmployee.name,
 				email = loggedInEmployee.email,
-				phone_number = loggedInEmployee.phone_number
+				phone_number = loggedInEmployee.phone_number,
                 role = loggedInEmployee.role,
 			};
 		}

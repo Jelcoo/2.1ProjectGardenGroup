@@ -67,9 +67,9 @@ namespace UI.UserControls
 		// validate the fields in form
 		private bool IsFormValid()
 		{
-			if (Datepicker.SelectedDate == null)
+			if (Datepicker.SelectedDate == null || Datepicker.SelectedDate > DateTime.Today)
 			{
-				MessageBox.Show("Please select a date.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+				MessageBox.Show("Please select a valid date.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
 				return false;
 			}
 
@@ -78,7 +78,11 @@ namespace UI.UserControls
 				MessageBox.Show("Please enter a title. ", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
 				return false;
 			}
-			
+			if (priorityDropDown.SelectedItem == null)
+			{
+				MessageBox.Show("Please select a priority.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+				return false;
+			}
 
 			if (string.IsNullOrWhiteSpace(txtBoxDescription.Text))
 			{
