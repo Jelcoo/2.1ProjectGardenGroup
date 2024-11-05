@@ -4,17 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace UI.UserControls
 {
@@ -25,7 +18,10 @@ namespace UI.UserControls
 	{
 		private ScrollViewer svMainContent;
 		public ObservableCollection<Ticket> Tickets { get; set; }
-		TicketLogic ticketLogic;
+		private TicketLogic ticketLogic;
+
+		private DispatcherTimer _timer;
+		private const int _delay = 500;
 
 		public TicketOverview(ScrollViewer svMainContent)
 		{
@@ -33,6 +29,14 @@ namespace UI.UserControls
 			this.svMainContent = svMainContent;
 			Tickets = new ObservableCollection<Ticket>();
 			this.DataContext = this;
+
+			// Create a time to act as a delay for the filtering logic.
+			// This is ment to prevent calling the database on eacht character change while the user is still typing.
+			_timer = new DispatcherTimer
+			{
+				Interval = TimeSpan.FromMilliseconds(_delay)
+			};
+			_timer.Tick += Timer_Tick; // Subscribe to the timer's Tick event
 		}
 
 		private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -48,8 +52,32 @@ namespace UI.UserControls
 			//ticketLogic.ChangeTicketStatus("b228c211-6b6e-4807-a41f-a515cc769be4", Model.Enums.Status_Enum.Closed);
 		}
 
+		private void Timer_Tick(object sender, EventArgs e)
+		{
+			// Stop the timer
+			_timer.Stop();
+
+			// Execute your filtering logic here
+			string searchQuery = tbFilterInput.Text;
+			ApplyFilter(searchQuery); // Your method to filter the data
+		}
+
 		private void tbFilterInput_TextChanged(object sender, TextChangedEventArgs e)
 		{
+			// Restart the timer on text change
+			_timer.Stop();
+			_timer.Start();
+		}
+
+		private void ApplyFilter(string searchQuery)
+		{
+			//check if user selected the "Full search" filter
+			if (filterType.Text == "Full search")
+			{
+				SearchInDatabase(searchQuery);
+				return;
+			}
+
 			// Haalt de huidige weergave van de DataGrid op als een CollectionView.
 			CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(TicketList.ItemsSource);
 
@@ -82,6 +110,20 @@ namespace UI.UserControls
 			};
 
 			view.Refresh(); // Ververs de weergave om de filterresultaten toe te passen.
+		}
+
+		private void SearchInDatabase(string searchQuery)
+		{
+			// Do not search if the search query is less than 3 characters
+			if (searchQuery.Length >= 3)
+			{
+				List<Ticket> tickets = ticketLogic.SearchTickets(searchQuery);
+				Tickets.Clear();
+				foreach (Ticket tkt in tickets)
+				{
+					Tickets.Add(tkt);
+				}
+			}
 		}
 
 		private bool ApplyComplexFilter(Ticket ticket, string filterText)
@@ -129,6 +171,7 @@ namespace UI.UserControls
 			// Stel de Content van svMainContent in om te navigeren naar de CreateTicket pagina
 			svMainContent.Content = createTicketScreen;
 		}
+
 		private void ViewTicketDetails_Click(object sender, RoutedEventArgs e)
 		{
 			var selectedTicket = (Ticket)((Button)sender).DataContext;
