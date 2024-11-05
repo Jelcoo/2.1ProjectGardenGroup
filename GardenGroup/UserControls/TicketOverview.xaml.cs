@@ -89,33 +89,39 @@ namespace UI.UserControls
 			{
 				if (item is Ticket ticket)
 				{
-					// Definieer bools voor match per eigenschap.
-					bool titleMatch = ticket.title.ToLower().Contains(filterText);
-					bool statusMatch = ticket.status.ToString().ToLower().Contains(filterText);
-					bool assignedToMatch = ticket.assigned_to.name.ToLower().Contains(filterText);
-					bool priorityMatch = ticket.priority.ToString().ToLower().Contains(filterText);
-
-					// Toepassen van de geselecteerde filterlogica.
-					switch (filterType.Text)
-					{
-						case "Title":
-							return titleMatch;
-						case "Status":
-							return statusMatch;
-						case "Assigned to":
-							return assignedToMatch;
-						case "Priority":
-							return priorityMatch;
-						case "AND (&) OR (|)":
-							return ApplyComplexFilter(ticket, filterText);
-						default:
-							return false;
-					}
+					return SwitchFilter(filterText, ticket);
 				}
 				return false;
 			};
 
 			view.Refresh(); // Ververs de weergave om de filterresultaten toe te passen.
+		}
+
+		private bool SwitchFilter(string filterText, Ticket ticket)
+		{
+
+			// Definieer bools voor match per eigenschap.
+			bool titleMatch = ticket.title.ToLower().Contains(filterText);
+			bool statusMatch = ticket.status.ToString().ToLower().Contains(filterText);
+			bool assignedToMatch = ticket.assigned_to.name.ToLower().Contains(filterText);
+			bool priorityMatch = ticket.priority.ToString().ToLower().Contains(filterText);
+
+			// Toepassen van de geselecteerde filterlogica.
+			switch (filterType.Text)
+			{
+				case "Title":
+					return titleMatch;
+				case "Status":
+					return statusMatch;
+				case "Assigned to":
+					return assignedToMatch;
+				case "Priority":
+					return priorityMatch;
+				case "AND (&) OR (|)":
+					return ApplyComplexFilter(ticket, filterText);
+				default:
+					return false;
+			}
 		}
 
 		private void SearchInDatabase(string searchQuery)
