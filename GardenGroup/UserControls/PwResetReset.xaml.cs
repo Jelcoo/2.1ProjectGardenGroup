@@ -1,4 +1,5 @@
 ﻿using Logic;
+using Model.Enums;
 using Model.Models;
 using System;
 using System.Collections.Generic;
@@ -46,6 +47,16 @@ namespace UI.UserControls
 
             MainWindow window = Window.GetWindow(this) as MainWindow;
             window.svMainContent.Content = new Dashboard();
+
+            Button? dashButton = window.FindName("dashboardButton") as Button;
+            Button? ticketsButton = window.FindName("ticketsButton") as Button;
+            Button? employeesButton = window.FindName("employeesButton") as Button;
+            dashButton.Visibility = Visibility.Visible;
+            ticketsButton.Visibility = Visibility.Visible;
+            if (employee.role == Role.ServiceDesk)
+            {
+                employeesButton.Visibility = Visibility.Visible;
+            }
         }
     }
 }
