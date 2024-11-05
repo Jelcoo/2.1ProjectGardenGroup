@@ -10,7 +10,7 @@ namespace DAL
     public class DAO
     {
         protected MongoClient client;
-        private string connectionString = "mongodb+srv://716588:Marijke%4002@cluster0.rnouj.mongodb.net/";
+        private string connectionString = ConfigurationManager.ConnectionStrings["DBConnectionString"].ConnectionString;
         private string dbName = "TuinDB";
         private IMongoDatabase db;
         protected IMongoDatabase Db { get { return db; } }
