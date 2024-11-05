@@ -31,16 +31,7 @@ namespace UI.UserControls
 			this.svMainContent = svMainContent;
 			ticketLogic = new TicketLogic();
 			InitializeComponent();
-			FillRoleDropDown();
 			FillPriorityDropDown();
-		}
-	
-		public void FillRoleDropDown()
-		{
-			foreach (Role role in Enum.GetValues(typeof(Role)))
-			{
-				roleDropDown.Items.Add(role);
-			}
 		}
 
 		public void FillPriorityDropDown()
@@ -82,15 +73,15 @@ namespace UI.UserControls
 				return false;
 			}
 
+			if (string.IsNullOrWhiteSpace(txtBoxTitle.Text))
+			{
+				MessageBox.Show("Please enter a title. ", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+				return false;
+			}
+
 			if (priorityDropDown.SelectedItem == null)
 			{
 				MessageBox.Show("Please select a priority level.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-				return false;
-			}
-			
-			if(roleDropDown.SelectedItem == null)
-			{
-				MessageBox.Show("Please select a role.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
 				return false;
 			}
 
@@ -112,6 +103,7 @@ namespace UI.UserControls
 			{
 				occurred_at = (DateTime)Datepicker.SelectedDate,
 				priority = priorityDropDown.SelectedItem.ToString(),
+				title = txtBoxDescription.Text,
 				reported_by = loggedInUser, // Gebruik de PartialUser direct
 				description = txtBoxDescription.Text,
 				status = Status_Enum.Open.ToString(),
@@ -123,6 +115,7 @@ namespace UI.UserControls
 		private void ClearForm()
 		{
 			Datepicker.SelectedDate = null;
+			txtBoxTitle.Clear();
 			priorityDropDown.SelectedIndex = -1;
 			txtBoxDescription.Clear();
 		}
