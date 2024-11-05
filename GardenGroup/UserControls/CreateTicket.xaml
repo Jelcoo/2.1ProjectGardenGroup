@@ -19,12 +19,9 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Label x:Name="lblDateReported" Content="Date/Time reported:" HorizontalAlignment="Left" VerticalAlignment="Center" Width="119" Grid.Row="1" Grid.Column="0"/>
+        <Label x:Name="lblDateOccurred" Content="Date/Time occurred:" HorizontalAlignment="Left" VerticalAlignment="Center" Width="119" Grid.Row="1" Grid.Column="0"/>
         <DatePicker x:Name="Datepicker" HorizontalAlignment="Left" VerticalAlignment="Center" Width="230" Grid.Row="1" Grid.Column="1" Margin="47,0,0,0"/>
-        <Label x:Name="lblReportedUser" Content="Reported by user:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0"/>
-        <ComboBox x:Name="reportedByDropdown" HorizontalAlignment="Left" VerticalAlignment="Center" Width="230" Grid.Row="2" Grid.Column="1" Margin="47,0,0,0"/>
-        <Label x:Name="lblRole" Content="Role:" HorizontalAlignment="Left" Margin="1,0,0,0" Grid.Row="3" VerticalAlignment="Center"/>
-        <ComboBox x:Name="roleDropDown" Grid.Column="1" HorizontalAlignment="Left" Margin="47,18,0,0" Grid.Row="3" VerticalAlignment="Top" Width="230"/>
+        <Label x:Name="lblRole" Content="Title: " HorizontalAlignment="Left" Margin="1,0,0,0" Grid.Row="3" VerticalAlignment="Center"/>
         <Label x:Name="lblPriority" Content="Priority:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4" Grid.Column="0"/>
         <ComboBox x:Name="priorityDropDown" HorizontalAlignment="Left" VerticalAlignment="Center" Width="230"  Grid.Row="4" Grid.Column="1" Margin="47,0,0,0"/>
         <Label x:Name="lblDescription" Content="Description:" HorizontalAlignment="Left" VerticalAlignment="Center"  Grid.Row="5" Grid.Column="0"/>
@@ -32,6 +29,7 @@
         <Label x:Name="lblTitle" Content="Create new incident ticket" HorizontalAlignment="Left" Margin="150,1,0,0" VerticalAlignment="Top" FontSize="24" Grid.ColumnSpan="2"/>
         <Button x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" VerticalAlignment="Center" Height="37" Width="90"  Grid.Row="7" Grid.Column="1" Margin="187,0,0,0" Click="btnCancel_Click"/>
         <Button x:Name="btnSubmit" Content="Submit ticket" Margin="87,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="90" Height="37" Background="#FF0090FF" Foreground="White" Grid.Row="7" Grid.Column="1" Click="btnSubmit_Click"/>
+        <TextBox x:Name="txtBoxTitle" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Width="238" Height="50" Grid.Row="3" Grid.Column="1" Margin="39,0,0,0"/>
 
     </Grid>
 </UserControl>

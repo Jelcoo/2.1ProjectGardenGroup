@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Model.Enums;
 
 namespace Model.Models
 {
@@ -15,8 +16,9 @@ namespace Model.Models
         public string name { get; set; }
         public string email { get; set; }
         public string phone_number { get; set; }
+		public Role role { get; set; }
 
-        public override string ToString()
+		public override string ToString()
         {
             return name;
         }

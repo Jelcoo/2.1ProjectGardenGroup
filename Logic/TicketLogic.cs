@@ -19,10 +19,6 @@ namespace Logic
         {
         }
 
-        public List<PartialUser> GetEmployees()
-        {
-            return ticketDao.Getemployees();
-        }
         public void SaveTicket(Ticket ticket)
         {
             ticketDao.SaveTicket(ticket);
@@ -44,8 +40,6 @@ namespace Logic
             ticketDao.ChangeTicketStatus(ticketId, status);
         }
 
-
-
         public void AddCommentToTicket(ObjectId ticketId, Comment comment)
         {
             commentLogic.AddComment(comment);
@@ -53,7 +47,7 @@ namespace Logic
         }
 
 
-        //methode om de ticket en bijbehorende comment op te halen
+         //methode om de ticket en bijbehorende comment op te halen
         public (Ticket, List<Comment>) GetTicketWithComments(ObjectId ticketId)
         {
             var ticket = ticketDao.GetTicketById(ticketId);
