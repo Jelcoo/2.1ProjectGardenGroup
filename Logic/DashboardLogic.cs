@@ -57,7 +57,7 @@ namespace Logic
             .WithLabelsSize(50)  // Set label size
             .WithInnerRadius(50) // Set inner radius
             .WithBackgroundInnerRadius(50) // Set background inner radius
-            .AddValue(openTicketsCount, OPEN_TICKET_TITLE, SKColors.Red)
+            .AddValue(openTicketsCount, OPEN_TICKET_TITLE, SKColors.Orange)
             .BuildSeries()
             .ToArray(); // Convert the result to an array to match the ISeries[] type
         }
