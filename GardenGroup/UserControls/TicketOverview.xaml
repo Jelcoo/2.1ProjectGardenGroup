@@ -67,7 +67,10 @@
 				<DataGridTemplateColumn Header="Actions">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
-							<Button Content="View Details" Click="ViewTicketDetails_Click" />
+							<StackPanel Orientation="Horizontal">
+								<Button Content="View Details" Click="ViewTicketDetails_Click" Margin="0,0,5,0" />
+								<Button Content="Close" Click="CloseTicket_Click" />
+							</StackPanel>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
 				</DataGridTemplateColumn>

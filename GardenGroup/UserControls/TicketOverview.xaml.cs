@@ -1,4 +1,5 @@
 ﻿using Logic;
+using Model.Enums;
 using Model.Models;
 using System;
 using System.Collections.Generic;
@@ -210,6 +211,20 @@ namespace UI.UserControls
 				var ticketDetail = new TicketDetail(selectedTicket._id.ToString(), loggedInUser);
 				ticketDetail.ShowDialog();
 			}
+		}
+		private void CloseTicket_Click(object sender, RoutedEventArgs e)
+		{
+			var selectedTicket = (Ticket)((Button)sender).DataContext;
+			if (selectedTicket != null)
+			{
+				CloseTicket(selectedTicket);
+				LoadTickets();
+			}
+		}
+
+		private void CloseTicket(Ticket ticket)
+		{
+			ticketLogic.ChangeTicketStatus(ticket._id, Status_Enum.Closed);
 		}
 	}
 }

@@ -34,6 +34,11 @@ namespace Logic
 			return ticketDao.SearchTickets(searchQuery, loggedInUser);
 		}
 
+		public void ChangeTicketStatus(ObjectId ticketId, Status_Enum status)
+		{
+			ticketDao.ChangeTicketStatus(ticketId, status);
+		}
+
 		public void AddCommentToTicket(ObjectId ticketId, Comment comment)
 		{
 			commentLogic.AddComment(comment);
